@@ -4,12 +4,16 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import Map from 'ol/Map.js';
-import OSM from 'ol/source/OSM.js';
-import TileLayer from 'ol/layer/Tile.js';
-import View from 'ol/View.js';
 import {add, toStringXY} from 'ol/coordinate';
 import { useGeographic } from 'ol/proj';
+import { IWork, Work } from 'src/app/models/work';
+import { WorkRegisterService } from 'src/app/services/work-register.service';
+import { Map, View } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import { OSM } from 'ol/source';
+import BaseLayer from 'ol/layer/Base';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -17,26 +21,29 @@ import { useGeographic } from 'ol/proj';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-    items!: MenuItem[];
+    // items!: MenuItem[];
 
-    products!: Product[];
+    // products!: Product[];
 
-    chartData: any;
+    // chartData: any;
 
-    chartOptions: any;
+    // chartOptions: any;
 
     subscription!: Subscription;
 
-    constructor() {
+    private _model: Work;
+    private _map: Map;
 
+    constructor(private _workRegisterService: WorkRegisterService) {
         setTimeout(() => {
             useGeographic();
-            const map = new Map({
+            this._map = new Map({
                 target: 'map',
                 layers: [
                   new TileLayer({
                     source: new OSM(),
                   }),
+                  this._model.getVectorPoint(),
                 ],
                 view: new View({
                   center: [55.9678, 54.7431],
@@ -50,77 +57,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // this.initChart();
-        // this.productService.getProductsSmall().then(data => this.products = data);
-
-        // this.items = [
-        //     { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-        //     { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        // ];
+      this._workRegisterService.getObjects().subscribe({
+        next: (v) => {
+          this._model = new Work(v[0]);
+        }
+      })
     }
-
-    // initChart() {
-    //     const documentStyle = getComputedStyle(document.documentElement);
-    //     const textColor = documentStyle.getPropertyValue('--text-color');
-    //     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    //     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-    //     this.chartData = {
-    //         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    //         datasets: [
-    //             {
-    //                 label: 'First Dataset',
-    //                 data: [65, 59, 80, 81, 56, 55, 40],
-    //                 fill: false,
-    //                 backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-    //                 borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-    //                 tension: .4
-    //             },
-    //             {
-    //                 label: 'Second Dataset',
-    //                 data: [28, 48, 40, 19, 86, 27, 90],
-    //                 fill: false,
-    //                 backgroundColor: documentStyle.getPropertyValue('--green-600'),
-    //                 borderColor: documentStyle.getPropertyValue('--green-600'),
-    //                 tension: .4
-    //             }
-    //         ]
-    //     };
-
-    //     this.chartOptions = {
-    //         plugins: {
-    //             legend: {
-    //                 labels: {
-    //                     color: textColor
-    //                 }
-    //             }
-    //         },
-    //         scales: {
-    //             x: {
-    //                 ticks: {
-    //                     color: textColorSecondary
-    //                 },
-    //                 grid: {
-    //                     color: surfaceBorder,
-    //                     drawBorder: false
-    //                 }
-    //             },
-    //             y: {
-    //                 ticks: {
-    //                     color: textColorSecondary
-    //                 },
-    //                 grid: {
-    //                     color: surfaceBorder,
-    //                     drawBorder: false
-    //                 }
-    //             }
-    //         }
-    //     };
-    // }
 
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    public getModelsFromServer() {
+      
     }
 }
