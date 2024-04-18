@@ -21,39 +21,13 @@ import VectorSource from 'ol/source/Vector';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-    // items!: MenuItem[];
-
-    // products!: Product[];
-
-    // chartData: any;
-
-    // chartOptions: any;
-
     subscription!: Subscription;
 
     private _model: Work;
     private _map: Map;
 
-    constructor(private _workRegisterService: WorkRegisterService) {
-        setTimeout(() => {
-            useGeographic();
-            this._map = new Map({
-                target: 'map',
-                layers: [
-                  new TileLayer({
-                    source: new OSM(),
-                  }),
-                  this._model.getVectorPoint(),
-                ],
-                view: new View({
-                  center: [55.9678, 54.7431],
-                  zoom: 11,
-                }),
-              });
-
-        })
-
-
+    constructor(private _workRegisterService: WorkRegisterService, public layoutService: LayoutService) {
+      this.initiateMap();
     }
 
     ngOnInit() {
@@ -62,6 +36,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this._model = new Work(v[0]);
         }
       })
+      // this.layoutService.createMap.subscribe({
+      //   next: () => {
+      //     // this.initiateMap();
+      //   },
+      //   error: (e) => {
+      //     console.log(e)
+      //   }
+      // })
     }
 
     ngOnDestroy() {
@@ -72,5 +54,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     public getModelsFromServer() {
       
+    }
+
+    public initiateMap() {
+      this._map = null;
+      setTimeout(() => {
+        useGeographic();
+        this._map = new Map({
+            target: 'map',
+            layers: [
+              new TileLayer({
+                source: new OSM(),
+              }),
+              this._model.getVectorPoint(),
+            ],
+            view: new View({
+              center: [55.9678, 54.7431],
+              zoom: 11,
+              minZoom: 10
+            }),
+          });
+      })
     }
 }

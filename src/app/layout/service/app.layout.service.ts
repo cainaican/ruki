@@ -42,6 +42,7 @@ export class LayoutService {
         staticMenuMobileActive: false,
         menuHoverActive: false,
     };
+    // createMap = new Subject<boolean>();
 
     private configUpdate = new Subject<AppConfig>();
 
@@ -88,6 +89,9 @@ export class LayoutService {
                 this.overlayOpen.next(null);
             }
         }
+
+        // this.createMap.next(true);
+
     }
 
     showProfileSidebar() {

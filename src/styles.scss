@@ -13,13 +13,15 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
 @import "node_modules/ol/ol.css";
-#map {
-	width: calc(100% - 370px);
-    height: calc(100% - 160px);
-    position: fixed;
-    margin: 0px 40px 40px 0px;
-}
+// #map {
+// 	width: calc(100% - 370px);
+//     height: calc(100% - 160px);
+//     position: fixed;
+//     margin: 0px 40px 40px 0px;
+// }
 .map {
+    position: fixed;
     width: 100%;
-    height: 400px;
+    height: calc(100% - 160px);
+
 }
