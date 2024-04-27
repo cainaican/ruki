@@ -18,6 +18,11 @@ export class LoginComponent {
     valCheck: string[] = ['remember'];
 
     password!: string;
+    login!: string;
 
     constructor(public layoutService: LayoutService) { }
+
+    signIn() {
+        debugger;
+    }
 }
