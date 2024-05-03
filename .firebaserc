@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ruki-bb6c5"
+  },
+  "targets": {
+    "ruki-bb6c5": {
+      "hosting": {
+        "sakai-ng": [
+          "ruki-bb6c5"
+        ]
+      }
+    }
+  }
+}

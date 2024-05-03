@@ -1,31 +1,91 @@
 <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
     <div class="flex flex-column align-items-center justify-content-center">
+        
         <!-- <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                 -->
         <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
             <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-5">
+                
+
+                <!-- <div class="text-center mb-5">
                     <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
                     <div class="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
-                    <span class="text-600 font-medium">Sign in to continue</span>
-                </div>
+                    <span class="text-600 font-medium">Войдите чтобы продолжить</span>
+                </div> -->
+    
+                <div *ngIf="signedIn; else signedOut">
 
-                <div>
+                    <div class="text-center mb-5">
+                        <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
+                        <div class="text-900 text-3xl font-medium mb-3">Регистрация</div>
+                        <!-- <span class="text-600 font-medium">Войдите чтобы продолжить</span> -->
+                    </div>
+
                     <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" [(ngModel)]="login" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+                    <input id="email1" type="text" [(ngModel)]="loginString" placeholder="Адрес электронной почты" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
 
-                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
+                    <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
 
-                    <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                        <div class="flex align-items-center">
+                    <label for="password2" class="block text-900 font-medium text-xl mb-2">Повтор пароля</label>
+                    <p-password id="password2" [(ngModel)]="passwordRepeatString" placeholder="Повтор пароля" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+
+                    <div class="flex align-items-center justify-content-between mb-0 gap-5">
+                        <!-- <div class="flex align-items-center">
                             <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
                             <label for="rememberme1">Remember me</label>
-                        </div>
-                        <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
+                        </div> -->
+                        <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a> -->
                     </div>
-                    <!-- <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" [routerLink]="['/']"></button> -->
-                    <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" (click)="signIn()"></button>
+
+                    <button pButton pRipple label="Зарегистрироваться" class="w-full mb-4 p-3 text-xl" (click)="signIn()"></button>
+                
+                    <button pButton pRipple label="Назад" class="w-full m-1 p-3 bg-transparent text-primary border-none text-xl" (click)="changeForm()"></button>
+                   
                 </div>
+
+
+                <ng-template #signedOut>
+                    <div>
+
+                        <div  *ngIf="loggedIn; else loggedOut">
+
+                            <div class="text-center mb-5">
+                                <div class="text-900 text-3xl font-medium mb-3">Здравствуйте</div>
+                                <!-- <span class="text-600 font-medium">Войдите чтобы продолжить</span> -->
+                            </div>
+    
+                            <button pButton pRipple label="Выйти" class="w-full mb-4 p-3 text-xl" (click)="logout()"></button>
+                            <button pButton pRipple label="На главную" class="w-full m-1 p-3 bg-transparent text-primary mb-4 p-3 text-xl" [routerLink]="'/'"></button>
+                        </div>
+
+
+                        <ng-template #loggedOut >
+                            <div class="text-center mb-5">
+                                <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
+                                <div class="text-900 text-3xl font-medium mb-3">Вход</div>
+                                <span class="text-600 font-medium">Войдите чтобы продолжить</span>
+                            </div>
+                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
+                            <input id="email1" type="text" [(ngModel)]="loginString" placeholder="Адрес электронной почты" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+        
+                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
+                            <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+        
+                            <div class="flex align-items-center justify-content-between mb-0 gap-5">
+                                <!-- <div class="flex align-items-center">
+                                    <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+                                    <label for="rememberme1">Remember me</label>
+                                </div>
+                                <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a> -->
+                            </div>
+                            <button  pButton pRipple label="Войти" class="w-full mb-4 p-3 text-xl" (click)="login()"></button>
+                            <button  pButton pRipple label="Регистрация" class="w-full m-1 p-3 bg-transparent text-primary text-xl" (click)="changeForm()"></button>
+
+                        </ng-template>
+                    
+                    </div>
+                </ng-template>
+
             </div>
         </div>
     </div>
