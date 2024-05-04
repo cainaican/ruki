@@ -5,11 +5,12 @@ interface InventoryStatus {
 export interface Product {
     id?: string;
     code?: string;
-    name?: string;
+    customerName?: string;
     description?: string;
     price?: number;
     quantity?: number;
-    inventoryStatus?: InventoryStatus;
+    // inventoryStatus?: InventoryStatus;
+    inventoryStatus?: string;
     category?: string;
     image?: string;
     rating?: number;
