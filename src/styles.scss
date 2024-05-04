@@ -16,7 +16,7 @@ $gutter: 1rem; //for primeflex grid system
 
 .map {
     position: fixed;
-    width: 100%;
-    height: calc(100% - 160px);
-    left: 350px;
+    height: calc(100% - 130px);
+    padding-top: 8px;
+    transition: width 200ms;
 }

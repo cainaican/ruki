@@ -1,19 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import {add, toStringXY} from 'ol/coordinate';
 import { useGeographic } from 'ol/proj';
-import { IWork, Work } from 'src/app/models/work';
+import { Work } from 'src/app/models/work';
 import { WorkRegisterService } from 'src/app/services/work-register.service';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import { OSM } from 'ol/source';
-import BaseLayer from 'ol/layer/Base';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -60,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this._map = null;
       setTimeout(() => {
         useGeographic();
+        this.layoutService.initializeMapWidth();
         this._map = new Map({
             target: 'map',
             layers: [

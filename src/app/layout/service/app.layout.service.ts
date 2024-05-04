@@ -47,6 +47,8 @@ export class LayoutService {
     private configUpdate = new Subject<AppConfig>();
 
     private overlayOpen = new Subject<any>();
+    private mapElem: HTMLDivElement;
+    private layoutMain: HTMLDivElement;
 
     configUpdate$ = this.configUpdate.asObservable();
 
@@ -63,6 +65,35 @@ export class LayoutService {
         });
     }
 
+    initializeMapWidth(){
+        this.mapElem = document.querySelector(".map");
+        this.layoutMain = document.querySelector(".layout-main");
+
+        const lauoutWidth = this.layoutMain.getBoundingClientRect().width;
+
+        setTimeout(() => {
+            this.mapElem.style.width = `${lauoutWidth}px`;
+        })
+        if (this.isOverlay()) {
+            this.mapElem.style.left = "28px";
+            return;
+        }
+
+        if(this.isDesktop()){
+            if (this.state.staticMenuDesktopInactive) {
+                this.mapElem.style.left = "0px";
+                return;
+            }
+            if(this.state.staticMenuMobileActive) {
+                this.mapElem.style.left = "0px";
+                return;
+            }
+            this.mapElem.style.left = "350px";
+
+        }
+
+    }
+
     updateStyle(config: AppConfig) {
         return (
             config.theme !== this._config.theme ||
@@ -71,16 +102,34 @@ export class LayoutService {
     }
 
     onMenuToggle() {
+
+        setTimeout(() => {
+            const lauoutWidth = this.layoutMain.getBoundingClientRect().width;
+            this.mapElem.style.width = `${lauoutWidth}px`;
+        }, 200)
+        
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
             if (this.state.overlayMenuActive) {
                 this.overlayOpen.next(null);
             }
+            this.mapElem.style.left = "28px";
+            return;
         }
 
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive =
                 !this.state.staticMenuDesktopInactive;
+
+            if (this.state.staticMenuDesktopInactive) {
+                this.mapElem.style.left = "0px";
+                this.mapElem.style.marginLeft = "30px";
+                return;
+            }
+            this.mapElem.style.left = "350px";
+            this.mapElem.style.marginLeft = "0px";
+
+
         } else {
             this.state.staticMenuMobileActive =
                 !this.state.staticMenuMobileActive;
@@ -88,9 +137,15 @@ export class LayoutService {
             if (this.state.staticMenuMobileActive) {
                 this.overlayOpen.next(null);
             }
+            if (this.state.staticMenuMobileActive) {
+                this.mapElem.style.left = "350px";
+                this.mapElem.style.marginLeft = "0px";
+                return;
+            }
+            this.mapElem.style.left = "0px";
+            this.mapElem.style.marginLeft = "30px";
         }
 
-        // this.createMap.next(true);
 
     }
 
