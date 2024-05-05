@@ -1,12 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { IServerResponse } from '../api/product';
 import { IWork } from 'src/app/models/work';
+import { CollectionReference, DocumentReference, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class WorksService {
 
-    constructor(private http: HttpClient) { }
+    worksCollection: CollectionReference;
+    works$: Observable<IWork[]>;
+    private firestore: Firestore = inject(Firestore);
+
+    constructor(private http: HttpClient) {
+        this.worksCollection = collection(this.firestore, "works");
+        this.works$ = collectionData(this.worksCollection) as Observable<IWork[]>;
+    }
 
     getProductsSmall() {
         return this.http.get<any>('assets/demo/data/products-small.json')
@@ -16,18 +25,16 @@ export class WorksService {
     }
 
     getWorks() {
-        return this.http.get<any>('assets/demo/data/works.json')
-            .toPromise()
-            .then(res => res.data as IServerResponse[])
-            .then(data => data);
+        return this.works$;
     }
 
     saveWork(work: IWork) {
-        console.log(work);
-        // return this.http.post<any>('assets/demo/data/works.json', {})
-        //     .toPromise()
-        //     .then(res => res.data as IServerResponse[])
-        //     .then(data => data);
+
+        if (!work) return;
+
+        addDoc(this.worksCollection, <IWork> work).then((documentReference: DocumentReference) => {
+            debugger
+        });
     }
 
     getProductsMixed() {
@@ -44,3 +51,4 @@ export class WorksService {
             .then(data => data);
     }
 }
+

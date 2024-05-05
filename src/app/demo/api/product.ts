@@ -5,7 +5,6 @@ interface InventoryStatus {
 export interface IServerResponse {
     id?: string;
     code?: string;
-    description?: string;
     quantity?: number;
     // inventoryStatus?: InventoryStatus;
     // inventoryStatus?: string;

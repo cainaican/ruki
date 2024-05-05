@@ -62,9 +62,13 @@ export class AppLayoutComponent implements OnDestroy {
         this.layoutService.state.staticMenuMobileActive = false;
         this.layoutService.state.menuHoverActive = false;
         if (this.menuOutsideClickListener) {
+
             const mapElem: HTMLDivElement = document.querySelector(".map");
-            mapElem.style.left = "0px";
-            mapElem.style.marginLeft = "30px";
+            if (mapElem) {
+                mapElem.style.left = "0px";
+                mapElem.style.marginLeft = "30px";
+            }
+
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
         }

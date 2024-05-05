@@ -3,12 +3,12 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { useGeographic } from 'ol/proj';
 import { IWork, Work } from 'src/app/models/work';
-import { WorkRegisterService } from 'src/app/services/work-register.service';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import { OSM } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
-import { Message, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { WorksService } from '../../service/works.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -16,14 +16,15 @@ import { Message, MessageService } from 'primeng/api';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-    subscription!: Subscription;
 
     private _works: Work[];
     private _vectorPoints: VectorLayer<any>[];
     private _map: Map;
 
+    subs: Subscription[] = [];
+
     constructor(
-      private _workRegisterService: WorkRegisterService, 
+      private _worksService: WorksService, 
       public layoutService: LayoutService,
       public messageService: MessageService,
 
@@ -31,24 +32,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-      this._workRegisterService.getObjects()
-      .then((ответСервера: IWork[]) => {
-        this._works = ответСервера.map((w) => new Work(w));
-        this._vectorPoints = this._works.map(w => w.getVectorPoint());
-        this.initiateMap();
-      })
-      .catch((e) => {
-        const message: Message = {
-          detail: e.message
+
+      const sub = this._worksService.getWorks().subscribe({
+        next: (ответСервера: IWork[]) => {
+          this._works = ответСервера.map((w) => new Work(w));
+          this._vectorPoints = this._works.map(w => w.getVectorPoint());
+          this.initiateMap();
+        },
+        error: (e) => {
+          this.messageService.add({detail: e.message, severity: "error"});
         }
-        this.messageService.add(message);
       })
+      this.subs.push(sub);
     }
 
     ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+      this.subs.forEach(s => s.unsubscribe);  
     }
 
     public initiateMap() {
