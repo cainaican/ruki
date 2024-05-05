@@ -1,13 +1,7 @@
-import { Observable, of } from "rxjs";
-import { WorkRegisterService } from "../services/work-register.service";
-import { inject } from "@angular/core";
 import { Feature } from "ol";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import { style } from "@angular/animations";
 import { Point } from "ol/geom";
-// import GeoJSON from 'ol/format/GeoJSON';
-// import Style from "ol/style/Style";
 import {
 	Circle as CircleStyle,
 	Fill,
@@ -15,25 +9,34 @@ import {
 	Style,
 	Text,
   } from 'ol/style';
-export interface IWork {
+import { IServerResponse } from "../demo/api/product";
+
+export interface IWork extends IServerResponse {
 	location?: [number, number];
 	address?: string;
 	contact: string;
-	phone: string;
 	description?: string;
 	price: number;
+    customerName?: string;
+    phone?: string;
 }
 
 export class Work {
 	_vectorPoint: VectorLayer<any>;
+	// _vectorPoint2: VectorLayer<any>;
+	// _vectorPoints: VectorLayer<any>[];
+
+	// products: Product[];
+
 	constructor(private _domainModel: IWork){
+
 		this._vectorPoint = new VectorLayer({
 			source: new VectorSource({
-				features: [new Feature({
-					geometry: new Point([55.9678, 54.7431]),
-					
-				})],
-				// format: new GeoJSON(),
+				features: [
+				new Feature({
+					geometry: new Point(this._domainModel.location),
+				}),
+			],
 			}),
 			style: new Style({
 				image: new CircleStyle({
@@ -46,7 +49,7 @@ export class Work {
 				  textAlign: "center",
 				  textBaseline: "middle",
 				  justify: "center",
-				  text: "2000 р",
+				  text: `${this._domainModel.price} ₽`,
 				  fill: new Fill({
 					color: "#000",
 				  }),

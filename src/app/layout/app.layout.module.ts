@@ -20,7 +20,7 @@ import { AppLayoutComponent } from "./app.layout.component";
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-
+import { InputTextareaModule } from 'primeng/inputtextarea';
 @NgModule({
     declarations: [
         AppMenuitemComponent,
@@ -46,6 +46,8 @@ import { DialogModule } from 'primeng/dialog';
         DialogModule, 
         ButtonModule, 
         AvatarModule,
+        InputTextareaModule
+        
     ],
     exports: [AppLayoutComponent]
 })

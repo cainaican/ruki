@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { IServerResponse } from 'src/app/demo/api/product';
+import { WorksService } from 'src/app/demo/service/works.service';
 
 @Component({
     templateUrl: './overlaysdemo.component.html',
@@ -13,9 +13,9 @@ export class OverlaysDemoComponent implements OnInit {
 
     display: boolean = false;
 
-    products: Product[] = [];
+    products: IServerResponse[] = [];
 
-    selectedProduct: Product = {};
+    selectedProduct: IServerResponse = {};
 
     visibleSidebar1: boolean = false;
 
@@ -27,7 +27,7 @@ export class OverlaysDemoComponent implements OnInit {
 
     visibleSidebar5: boolean = false;
 
-    constructor(private productService: ProductService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+    constructor(private productService: WorksService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
     ngOnInit() {
         this.productService.getProductsSmall().then(products => this.products = products);

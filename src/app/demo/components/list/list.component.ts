@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
+import { IServerResponse } from '../../api/product';
+import { WorksService } from '../../service/works.service';
 
 @Component({
   selector: 'app-list',
@@ -9,27 +9,27 @@ import { ProductService } from '../../service/product.service';
   providers: []
 })
 export class ListComponent {
-  products!: Product[];
+  products!: IServerResponse[];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: WorksService) {}
 
   ngOnInit() {
-      this.productService.getProducts().then((data) => (this.products = data));
+    this.productService.getWorks().then((data) => (this.products = data));
   }
 
-  getSeverity(product: Product) {
-      switch (product.inventoryStatus) {
-          case 'INSTOCK':
-              return 'success';
+//   getSeverity(product: IServerResponse) {
+//       switch (product.inventoryStatus) {
+//           case 'INSTOCK':
+//               return 'success';
 
-          case 'LOWSTOCK':
-              return 'warning';
+//           case 'LOWSTOCK':
+//               return 'warning';
 
-          case 'OUTOFSTOCK':
-              return 'danger';
+//           case 'OUTOFSTOCK':
+//               return 'danger';
 
-          default:
-              return null;
-      }
-  };
+//           default:
+//               return null;
+//       }
+//   };
 }

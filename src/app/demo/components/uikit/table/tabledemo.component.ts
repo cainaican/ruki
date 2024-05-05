@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Customer, Representative } from 'src/app/demo/api/customer';
 import { CustomerService } from 'src/app/demo/service/customer.service';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { IServerResponse } from 'src/app/demo/api/product';
+import { WorksService } from 'src/app/demo/service/works.service';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
@@ -30,7 +30,7 @@ export class TableDemoComponent implements OnInit {
 
     statuses: any[] = [];
 
-    products: Product[] = [];
+    products: IServerResponse[] = [];
 
     rowGroupMetadata: any;
 
@@ -46,7 +46,7 @@ export class TableDemoComponent implements OnInit {
 
     @ViewChild('filter') filter!: ElementRef;
 
-    constructor(private customerService: CustomerService, private productService: ProductService) { }
+    constructor(private customerService: CustomerService, private productService: WorksService) { }
 
     ngOnInit() {
         this.customerService.getCustomersLarge().then(customers => {

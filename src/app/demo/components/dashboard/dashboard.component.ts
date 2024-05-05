@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { useGeographic } from 'ol/proj';
-import { Work } from 'src/app/models/work';
+import { IWork, Work } from 'src/app/models/work';
 import { WorkRegisterService } from 'src/app/services/work-register.service';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import { OSM } from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -16,37 +18,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    private _model: Work;
+    private _works: Work[];
+    private _vectorPoints: VectorLayer<any>[];
     private _map: Map;
 
-    constructor(private _workRegisterService: WorkRegisterService, public layoutService: LayoutService) {
-      this.initiateMap();
+    constructor(
+      private _workRegisterService: WorkRegisterService, 
+      public layoutService: LayoutService,
+      public messageService: MessageService,
+
+    ) {
     }
 
     ngOnInit() {
-      this._workRegisterService.getObjects().subscribe({
-        next: (v) => {
-          this._model = new Work(v[0]);
-        }
+      this._workRegisterService.getObjects()
+      .then((ответСервера: IWork[]) => {
+        this._works = ответСервера.map((w) => new Work(w));
+        this._vectorPoints = this._works.map(w => w.getVectorPoint());
+        this.initiateMap();
       })
-      // this.layoutService.createMap.subscribe({
-      //   next: () => {
-      //     // this.initiateMap();
-      //   },
-      //   error: (e) => {
-      //     console.log(e)
-      //   }
-      // })
+      .catch((e) => {
+        const message: Message = {
+          detail: e.message
+        }
+        this.messageService.add(message);
+      })
     }
 
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
-    }
-
-    public getModelsFromServer() {
-      
     }
 
     public initiateMap() {
@@ -60,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               new TileLayer({
                 source: new OSM(),
               }),
-              this._model.getVectorPoint(),
+              ...this._vectorPoints,
             ],
             view: new View({
               center: [55.9678, 54.7431],

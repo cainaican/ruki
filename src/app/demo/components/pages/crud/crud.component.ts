@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/demo/api/product';
+import { IServerResponse } from 'src/app/demo/api/product';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { WorksService } from 'src/app/demo/service/works.service';
 
 @Component({
     templateUrl: './crud.component.html',
@@ -16,11 +16,11 @@ export class CrudComponent implements OnInit {
 
     deleteProductsDialog: boolean = false;
 
-    products: Product[] = [];
+    products: IServerResponse[] = [];
 
-    product: Product = {};
+    product: IServerResponse = {};
 
-    selectedProducts: Product[] = [];
+    selectedProducts: IServerResponse[] = [];
 
     submitted: boolean = false;
 
@@ -30,10 +30,10 @@ export class CrudComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private productService: ProductService, private messageService: MessageService) { }
+    constructor(private productService: WorksService, private messageService: MessageService) { }
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+        this.productService.getWorks().then(data => this.products = data);
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -60,12 +60,12 @@ export class CrudComponent implements OnInit {
         this.deleteProductsDialog = true;
     }
 
-    editProduct(product: Product) {
+    editProduct(product: IServerResponse) {
         this.product = { ...product };
         this.productDialog = true;
     }
 
-    deleteProduct(product: Product) {
+    deleteProduct(product: IServerResponse) {
         this.deleteProductDialog = true;
         this.product = { ...product };
     }

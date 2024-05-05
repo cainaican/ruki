@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { IServerResponse } from 'src/app/demo/api/product';
+import { WorksService } from 'src/app/demo/service/works.service';
 
 @Component({
     templateUrl: './listdemo.component.html'
 })
 export class ListDemoComponent implements OnInit {
 
-    products: Product[] = [];
+    products: IServerResponse[] = [];
 
     sortOptions: SelectItem[] = [];
 
@@ -23,10 +23,10 @@ export class ListDemoComponent implements OnInit {
 
     orderCities: any[] = [];
 
-    constructor(private productService: ProductService) { }
+    constructor(private productService: WorksService) { }
 
     ngOnInit() {
-        this.productService.getProducts().then(data => this.products = data);
+        this.productService.getWorks().then(data => this.products = data);
 
         this.sourceCities = [
             { name: 'San Francisco', code: 'SF' },

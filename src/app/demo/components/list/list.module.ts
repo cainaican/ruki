@@ -5,7 +5,7 @@ import { ListComponent } from './list.component';
 import { DataViewModule } from 'primeng/dataview';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { ProductService } from '../../service/product.service';
+import { WorksService } from '../../service/works.service';
 
 
 @NgModule({
@@ -17,6 +17,6 @@ import { ProductService } from '../../service/product.service';
     ButtonModule,
     TagModule
   ],
-  providers: [ProductService]
+  providers: [WorksService]
 })
 export class ListModule { }
