@@ -19,6 +19,7 @@ export interface IWork extends IServerResponse {
 	price: number;
     customerName?: string;
     phone?: string;
+	userId: string;
 }
 
 export class Work {
