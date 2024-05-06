@@ -6,7 +6,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { WorksService } from '../../service/works.service';
-
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [ListComponent],
@@ -15,7 +15,8 @@ import { WorksService } from '../../service/works.service';
     ListRoutingModule,
     DataViewModule,
     ButtonModule,
-    TagModule
+    TagModule,
+    SkeletonModule
   ],
   providers: [WorksService]
 })

@@ -18,6 +18,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [
@@ -27,6 +28,7 @@ import { MessageService } from 'primeng/api';
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
+        provideStorage(() => getStorage()),
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
