@@ -9,6 +9,5 @@ export interface IServerResponse {
     // inventoryStatus?: InventoryStatus;
     // inventoryStatus?: string;
     category?: string;
-    image?: string;
     rating?: number;
 }

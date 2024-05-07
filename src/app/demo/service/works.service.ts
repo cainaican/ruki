@@ -3,8 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { IServerResponse } from '../api/product';
 import { IWork } from 'src/app/models/work';
 import { CollectionReference, DocumentReference, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
-import { Observable, from } from 'rxjs';
-import { Storage, StorageReference, ref, getBytes, getDownloadURL } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
+import { StorageReference, getDownloadURL } from '@angular/fire/storage';
 
 @Injectable()
 export class WorksService {
@@ -15,12 +15,10 @@ export class WorksService {
     testRef: StorageReference;
 
     private firestore: Firestore = inject(Firestore);
-    private storage: Storage = inject(Storage);
 
     constructor(private http: HttpClient) {
         this.worksCollection = collection(this.firestore, "works");
         this.works$ = collectionData(this.worksCollection) as Observable<IWork[]>;
-        this.testRef = ref(this.storage, 'chp.jpg');
         
     }
 
@@ -44,8 +42,8 @@ export class WorksService {
         });
     }
 
-    getImageLink(): Promise<string> {
-        return getDownloadURL(this.testRef);
+    getImageLinks(url: StorageReference ): Promise<string> {
+        return getDownloadURL(url);
     }
 
     getProductsMixed() {

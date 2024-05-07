@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               zoom: 11,
               minZoom: 10
             }),
-          });
+        });
       })
     }
 }

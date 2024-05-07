@@ -11,6 +11,12 @@ import {
   } from 'ol/style';
 import { IServerResponse } from "../demo/api/product";
 
+export interface IWorkImages {
+	itemImageSrc: string,
+	alt: string,
+	title: string
+}
+
 export interface IWork extends IServerResponse {
 	location?: [number, number];
 	address?: string;
@@ -20,6 +26,8 @@ export interface IWork extends IServerResponse {
     customerName?: string;
     phone?: string;
 	userId: string;
+    images?: IWorkImages[];
+
 }
 
 export class Work {
@@ -61,6 +69,8 @@ export class Work {
 				}),
 			  })
 		});
+
+		
 	}
 
 	getVectorPoint() {

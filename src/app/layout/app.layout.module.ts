@@ -22,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 @NgModule({
     declarations: [
         AppMenuitemComponent,
@@ -48,7 +49,8 @@ import { FileUploadModule } from 'primeng/fileupload';
         ButtonModule, 
         AvatarModule,
         InputTextareaModule,
-        FileUploadModule
+        FileUploadModule,
+        AutoCompleteModule
         
     ],
     exports: [AppLayoutComponent]

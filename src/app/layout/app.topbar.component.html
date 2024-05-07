@@ -30,7 +30,8 @@
         header="Header" 
         [(visible)]="visible" 
         [modal]="true" 
-        [style]="{ width: '45rem' }">
+        [style]="{ width: '45rem' }"
+        >
             <ng-template pTemplate="header">
                 <div class="inline-flex align-items-center justify-content-center gap-2">
                     <!-- <p-avatar 
@@ -46,12 +47,26 @@
                 <label for="address" class="font-semibold w-6rem">
                     Адрес
                 </label>
-                <input pInputText 
+                
+                <span class="p-fluid flex-auto">  
+                    <p-autoComplete 
+                        [(ngModel)]="newWork.address" 
+                        [suggestions]="suggestions" 
+                        (completeMethod)="searchAddress($event)" 
+                        inputId="address" 
+                        placeholder="Начните вводить адрес"
+                        (onSelect)="onSelect($event)"
+                        />
+                    <small id="username-help" class="ml-1">
+                        Пример: Уфа, Энтузиастов, 11
+                    </small>
+                </span>
+                <!-- <input pInputText 
                     id="address" 
                     class="flex-auto" 
                     autocomplete="off"
                     [(ngModel)]="newWork.address"
-                    />
+                    /> -->
             </div>
             <div class="flex align-items-center gap-3 mb-3">
                 <label for="phone" class="font-semibold w-6rem">
@@ -89,7 +104,7 @@
                     [(ngModel)]="newWork.price"
                 />
             </div>
-            <div class="flex align-items-center gap-5 mb-3">
+            <div class="flex align-items-center gap-3 mb-3">
                 <label for="iamge" class="font-semibold w-6rem">
                     Фото
                 </label>
@@ -102,7 +117,7 @@
                     [showUploadButton]="false"
                     accept="image/*"
                     maxFileSize="1000000"
-                    class="w-full"
+                    class="flex-auto"
                     #pFileUpload
                     >
                         <ng-template pTemplate="content">
