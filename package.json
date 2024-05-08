@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/"
+    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/",
+    "deploy": "npx ng deploy --repo=https://github.com/cainaican/ruki.git"
   },
   "private": true,
   "dependencies": {

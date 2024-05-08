@@ -25,7 +25,7 @@ jobs:
         
       - name: Deploy to gh pages
         run: |
-          npx ng deploy --repo=https://github.com/cainaican/ruki.git --name="cainaican" --email=musindinislam1@yandex.ru
+          npm run deploy
         env:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
