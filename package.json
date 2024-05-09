@@ -1,6 +1,6 @@
 {
-  "name": "sakai-ng",
-  "version": "17.0.0",
+  "name": "ruki",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -9,8 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/",
-    "deploy": "npx ng deploy --repo=https://github.com/cainaican/ruki.git"
+    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/"
   },
   "private": true,
   "dependencies": {
@@ -45,7 +44,6 @@
     "@angular/cli": "^17.0.5",
     "@angular/compiler-cli": "^17.0.5",
     "@types/jasmine": "~4.3.1",
-    "angular-cli-ghpages": "^2.0.0-beta.2",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
