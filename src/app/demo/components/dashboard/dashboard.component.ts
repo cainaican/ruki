@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-      const sub = this._worksService.getWorks().subscribe({
+      const sub = this._worksService.getAllWorks().subscribe({
         next: (ответСервера: IWork[]) => {
           this._works = ответСервера.map((w) => new Work(w));
           this._vectorPoints = this._works.map(w => w.getVectorPoint());

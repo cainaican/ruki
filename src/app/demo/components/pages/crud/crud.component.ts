@@ -33,7 +33,7 @@ export class CrudComponent implements OnInit {
     constructor(private productService: WorksService, private messageService: MessageService) { }
 
     ngOnInit() {
-        this.productService.getWorks().then(data => this.products = data);
+        this.productService.getAllWorks().then(data => this.products = data);
 
         this.cols = [
             { field: 'product', header: 'Product' },

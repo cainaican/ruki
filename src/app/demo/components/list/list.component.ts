@@ -37,7 +37,7 @@ export class ListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const sub = this.worksService.getWorks().subscribe({
+    const sub = this.worksService.getAllWorks().subscribe({
       next: (value) => {
         this.works = value;
 

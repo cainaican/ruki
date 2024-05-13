@@ -8,6 +8,10 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { FormsModule } from '@angular/forms';
+import { DataViewModule } from 'primeng/dataview';
+import { GalleriaModule } from 'primeng/galleria';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [CabinetComponent],
@@ -19,7 +23,11 @@ import { FormsModule } from '@angular/forms';
     InputTextareaModule,
     ButtonModule,
     CardModule,
-    DividerModule
+    DividerModule,
+    DataViewModule,
+    TagModule,
+    SkeletonModule,
+    GalleriaModule
   ]
 })
 export class CabinetModule { }
