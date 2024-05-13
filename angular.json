@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sakai-ng:build:production"
+              "buildTarget": "ruki:build:production"
             },
             "development": {
-              "buildTarget": "sakai-ng:build:development"
+              "buildTarget": "ruki:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sakai-ng:build"
+            "buildTarget": "ruki:build"
           }
         },
         "test": {
@@ -106,12 +106,12 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "sakai-ng:build:production",
-              "serveTarget": "sakai-ng:serve:production"
+              "buildTarget": "ruki:build:production",
+              "serveTarget": "ruki:serve:production"
             },
             "development": {
-              "buildTarget": "sakai-ng:build:development",
-              "serveTarget": "sakai-ng:serve:development"
+              "buildTarget": "ruki:build:development",
+              "serveTarget": "ruki:serve:development"
             }
           },
           "defaultConfiguration": "production"

@@ -14,35 +14,32 @@
     
                 <div *ngIf="signedIn; else signedOut">
 
-                    <div class="text-center mb-5">
-                        <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
-                        <div class="text-900 text-3xl font-medium mb-3">Регистрация</div>
-                        <!-- <span class="text-600 font-medium">Войдите чтобы продолжить</span> -->
+                    <div *ngIf="!verificationOpened">
+                        <div class="text-center mb-5">
+                            <div class="text-900 text-3xl font-medium mb-3">Регистрация</div>
+                        </div>
+
+                        <label for="phone" class="block text-900 text-xl font-medium mb-2">Номер телефона</label>
+                        <input id="phone" type="text" [(ngModel)]="phoneNumber" placeholder="Номер мобильного телефона" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+                        
+                        <label for="name" class="block text-900 text-xl font-medium mb-2">Имя</label>
+                        <input id="name" type="text" [(ngModel)]="loginString" placeholder="Имя" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+    
+                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
+                        <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+    
+                        <label for="password2" class="block text-900 font-medium text-xl mb-2">Повтор пароля</label>
+                        <p-password id="password2" [(ngModel)]="passwordRepeatString" placeholder="Повтор пароля" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+
+                        <div class="flex align-items-center justify-content-between mb-0 gap-3" style="flex-direction: column;">
+                            <button pButton pRipple label="Зарегистрироваться" class="w-full p-3 text-xl" (click)="signInWithPhoneNumber()"></button>
+                            <button  pButton pRipple label="Назад" class="w-full m-1 p-3 bg-transparent text-primary text-xl" (click)="changeForm()"></button>
+
+                        </div>
+
                     </div>
-
-                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" [(ngModel)]="loginString" placeholder="Адрес электронной почты" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
-
-                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
-                    <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
-                    <label for="password2" class="block text-900 font-medium text-xl mb-2">Повтор пароля</label>
-                    <p-password id="password2" [(ngModel)]="passwordRepeatString" placeholder="Повтор пароля" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
-                    <div class="flex align-items-center justify-content-between mb-0 gap-5">
-                        <!-- <div class="flex align-items-center">
-                            <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                            <label for="rememberme1">Remember me</label>
-                        </div> -->
-                        <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a> -->
-                    </div>
-
-                    <button pButton pRipple label="Зарегистрироваться" class="w-full mb-4 p-3 text-xl" (click)="signIn()"></button>
-                
-                    <button pButton pRipple label="Назад" class="w-full m-1 p-3 bg-transparent text-primary border-none text-xl" (click)="changeForm()"></button>
-                   
+                    
                 </div>
-
 
                 <ng-template #signedOut>
                     <div>
@@ -60,32 +57,43 @@
 
 
                         <ng-template #loggedOut >
-                            <div class="text-center mb-5">
+
+                            <div *ngIf="!verificationOpened">
+                                <div class="text-center mb-5">
                                 <!-- <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
-                                <div class="text-900 text-3xl font-medium mb-3">Вход</div>
-                                <span class="text-600 font-medium">Войдите чтобы продолжить</span>
-                            </div>
-                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                            <input id="email1" type="text" [(ngModel)]="loginString" placeholder="Адрес электронной почты" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
-        
-                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
-                            <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [feedback]="false" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-        
-                            <div class="flex align-items-center justify-content-between mb-0 gap-5">
-                                <!-- <div class="flex align-items-center">
-                                    <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                                    <label for="rememberme1">Remember me</label>
+                                    <div class="text-900 text-3xl font-medium mb-3">Вход</div>
+                                    <span class="text-600 font-medium">Войдите чтобы продолжить</span>
                                 </div>
-                                <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a> -->
+                                <label for="email1" class="block text-900 text-xl font-medium mb-2">Номер телефона</label>
+                                <input id="email1" type="text" [(ngModel)]="phoneNumber" placeholder="Номер мобильного телефона" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+            
+                                <label for="password1" class="block text-900 font-medium text-xl mb-2">Пароль</label>
+                                <p-password id="password1" [(ngModel)]="passwordString" placeholder="Пароль" [feedback]="false" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+            
+                                <div class="flex align-items-center justify-content-between mb-0 gap-5">
+                                    <!-- <div class="flex align-items-center">
+                                        <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+                                        <label for="rememberme1">Remember me</label>
+                                    </div>
+                                    <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a> -->
+                                </div>
+                                <button  pButton pRipple label="Войти" class="w-full mb-4 p-3 text-xl" (click)="login()"></button>
+                                <button  pButton pRipple label="Регистрация" class="w-full m-1 p-3 bg-transparent text-primary text-xl" (click)="changeForm()"></button>
                             </div>
-                            <button  pButton pRipple label="Войти" class="w-full mb-4 p-3 text-xl" (click)="login()"></button>
-                            <button  pButton pRipple label="Регистрация" class="w-full m-1 p-3 bg-transparent text-primary text-xl" (click)="changeForm()"></button>
+                            
 
                         </ng-template>
                     
                     </div>
                 </ng-template>
 
+                <div [ngStyle]="{'display': getDisplay()}" id="recaptcha-container" style="margin: 10px; justify-content: center;"></div>
+
+                <div  *ngIf="verificationOpened" class="card flex justify-content-center gap-2" style="flex-direction: column;">
+                    <p-inputOtp [(ngModel)]="verificationCode" [length]="6" 
+                    class="custom-otp-input" />
+                    <button pButton pRipple label="Отправить код" class=" p-3 bg-transparent text-primary border-none text-xl" (click)="verifyCode()"></button>
+                </div>
             </div>
         </div>
     </div>

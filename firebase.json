@@ -38,7 +38,7 @@
   },
   "hosting": [
     {
-      "target": "sakai-ng",
+      "target": "ruki",
       "source": ".",
       "frameworksBackend": {}
     }

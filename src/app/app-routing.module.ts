@@ -13,7 +13,6 @@ import { authGuard } from './guards/auth.guard';
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'list', loadChildren: () => import('./demo/components/list/list.module').then(m => m.ListModule) },
                     { path: 'cabinet', loadChildren: () => import('./demo/components/cabinet/cabinet.module').then(m => m.CabinetModule) },
-                    { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
 
                     // { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     // { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
@@ -23,6 +22,7 @@ import { authGuard } from './guards/auth.guard';
                 ],
                 canActivate: [authGuard]
             },
+            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'notfound', component: NotfoundComponent },
             // { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
