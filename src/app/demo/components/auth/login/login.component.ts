@@ -1,10 +1,10 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithRedirect, signOut, user } from '@angular/fire/auth';
+import { ApplicationVerifier, Auth, RecaptchaVerifier, User, getAuth, signInWithPhoneNumber, signOut, updateProfile, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { Message, MessageService } from 'primeng/api';
-import { em } from '@fullcalendar/core/internal-common';
 import { Router } from '@angular/router';
+import { AurthService } from 'src/app/demo/service/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -18,91 +18,208 @@ import { Router } from '@angular/router';
         }
     `],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnDestroy, OnInit {
 
     private auth: Auth = inject(Auth);
 
     passwordString: string;
     passwordRepeatString: string;
     loginString: string;
+    phoneNumber: string;
+
 
     loggedIn: boolean;
     signedIn: boolean;
+
+
+    appVerifier: ApplicationVerifier;
+    appVerifierOpened: boolean = false;
+
+    verificationOpened: boolean = false;
+    verificationCode: string;
+
 
     user$ = user(this.auth);
     userSubscription: Subscription;
 
     constructor(
-        public layoutService: LayoutService, 
-        private messageService: MessageService,
-        private router: Router
+        public _layoutService: LayoutService, 
+        private _messageService: MessageService,
+        private _router: Router,
+        private _aurthService: AurthService,
     ) { 
         this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-            //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-        //  console.log(aUser);
-
-         if (aUser) {
-            this.loggedIn = true;
-            return;
-         } 
-         this.loggedIn = false;
-
+            if (aUser) {
+                this.loggedIn = true;
+                return;
+            };
+            this.loggedIn = false;
         })
+
+        this.auth.useDeviceLanguage();
+
+    }
+
+    ngOnInit(){
+        
+        (window as any).recaptchaVerifier = new RecaptchaVerifier(this.auth, 'recaptcha-container', {});
+        (window as any).recaptchaVerifier.render();
+
+        this.appVerifier = (window as any).recaptchaVerifier;
     }
 
     ngOnDestroy(): void {
         this.userSubscription.unsubscribe();
     }
 
-    login() {
-        signInWithEmailAndPassword(this.auth, this.loginString, this.passwordString)
-        .then((v) => {
-            const mes: Message = {detail: `Здравствуйте ${v.user.email}`, severity: "success", summary: "Аутентификация"}
-            this.messageService.add(mes);
+    login(): void {
+        this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
 
-            this.router.navigateByUrl("/");
-        })
-        .catch((e) => {
-            const mes: Message = {detail: e.message, severity: "error", summary: "Аутентификация"}
-            this.messageService.add(mes);
-        })
+        this._aurthService.getUserByPhoneNumber(this.phoneNumber)
+            .then((v) => {
+                if (!v.empty) {
+            
+                    this.appVerifierOpened = true;
+
+                    return signInWithPhoneNumber(this.auth, this.phoneNumber, this.appVerifier)
+                }
+
+                const errMessage = "Пользователя с таким номером мобильного не существует";
+
+                this._messageService.add({severity: "error", detail: errMessage, summary: "Регистрация"});
+
+                throw new Error(errMessage);
+            })
+            .then(confirmationResult => {
+
+                (window as any).confirmationResult = confirmationResult;
+
+                this.appVerifierOpened = false;
+
+                this.verificationOpened = true;
+
+            })
+            .catch((e) => {
+
+                let userExistMessage = "Пользователя с таким номером мобильного не существует";
+
+                if (e.message === userExistMessage) return;
+
+                let mes: Message = {detail: e.message, severity: "Неизвестная ошибка входа", summary: "Вход"};
+
+                this._messageService.add(mes);
+            })
+
+
     }
 
-    logout() {
+    logout(): void {
        signOut(this.auth);
     }
 
-    signIn() {
+    signInWithPhoneNumber(): void {
 
+        this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
+        
         if (this.passwordString.length < 6) {
             const mes: Message = {detail: "Пароль должен быть более 6 символов", severity: "error", summary: "Регистрация"};
-            this.messageService.add(mes);
+            this._messageService.add(mes);
             return;
         }
 
         if (this.passwordString !== this.passwordRepeatString) {
             const mes: Message = {detail: "Пароли не совпадают", severity: "error", summary: "Регистрация"};
-            this.messageService.add(mes);
+            this._messageService.add(mes);
             return;
         }
 
-        createUserWithEmailAndPassword(this.auth, this.loginString, this.passwordString)
-        .then(v => {
-            const mes: Message = {detail: "Вы успешно зарегистрированы", severity: "success", summary: "Регистрация"};
-            this.loginString = "";
-            this.passwordString = "";
-            this.passwordRepeatString = "";
-            this.messageService.add(mes);
-            this.router.navigateByUrl("/");
-        })
-        .catch((e) => {
-            const mes: Message = {detail: e.message, severity: "error", summary: "Регистрация"}
-            this.messageService.add(mes);
-        })
+       this._aurthService.getUserByPhoneNumber(this.phoneNumber)
+            .then((v) => {
+                if (v.empty) {
+            
+                    this.appVerifierOpened = true;
+
+                    return signInWithPhoneNumber(this.auth, this.phoneNumber, this.appVerifier)
+                }
+
+                const errMessage = "Пользователь с таким номером мобильного уже существует";
+
+                this._messageService.add({severity: "error", detail: errMessage, summary: "Регистрация"});
+
+                throw new Error(errMessage);
+            })
+            .then(confirmationResult => {
+
+                (window as any).confirmationResult = confirmationResult;
+
+                this.appVerifierOpened = false;
+
+                this.verificationOpened = true;
+
+            })
+            .catch((e) => {
+
+                let userExistMessage = "Пользователь с таким номером мобильного уже существует";
+
+                if (e.message === userExistMessage) return;
+
+                let mes: Message = {detail: e.message, severity: "Неизвестная ошибка регситрации", summary: "Регистрация"};
+
+                this._messageService.add(mes);
+            })
+
+        // return;
+
+        // this.appVerifierOpened = true;
+
+        // signInWithPhoneNumber(this.auth, this.phoneNumber, this.appVerifier)
+        //     .then(confirmationResult => {
+
+        //         debugger
+        //         (window as any).confirmationResult = confirmationResult;
+
+        //         this.appVerifierOpened = false;
+
+        //         this.verificationOpened = true;
+
+        //     })
+        //     .catch((e) => {
+        //         const mes: Message = {detail: e.message, severity: "error", summary: "Регистрация"}
+        //         this._messageService.add(mes);
+        //     })
+        
     }
 
-    changeForm() {
+    changeForm(): void {
+        this.phoneNumber = "";
+        this.passwordString = "";
+        this.passwordRepeatString = "";
+        this.loginString = "";
         this.signedIn = !this.signedIn;
     }
 
+    getDisplay(): string {
+        return this.appVerifierOpened ? "flex" : "none";
+    }
+
+    async verifyCode(): Promise<void> {
+        try {
+            await (window as any).confirmationResult.confirm(this.verificationCode);
+            await updateProfile(this.auth.currentUser, {displayName: this.loginString});
+            await this.navigateToMainPage();
+        } catch(e) {
+            throw new Error(e);
+        }
+    }
+
+    navigateToMainPage(): Promise<any> {
+        return new Promise(() => {
+            // const mes: Message = {detail: "Вы успешно зарегистрированы", severity: "success", summary: "Регистрация"};
+            this.loginString = "";
+            this.passwordString = "";
+            this.passwordRepeatString = "";
+            // this.messageService.add(mes);
+            this._router.navigateByUrl("/");
+        })
+    }
 }

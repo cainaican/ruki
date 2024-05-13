@@ -4,43 +4,29 @@
 			<h5>Основная информация</h5>
 			<div class="field">
 				<label htmlFor="name">Имя</label>
-				<input pInputText id="name" type="text" />
+				<input pInputText id="name" type="text" [(ngModel)]="displayName"/>
 			</div>
 			<div class="field">
 				<label htmlFor="email">Почта</label>
-				<input pInputText id="email" type="text" />
+				<input pInputText id="email" type="text" [(ngModel)]="email"/>
 			</div>
 			<div class="field">
 				<label htmlFor="phome">Номер мобильного</label>
-				<input pInputText id="phome" type="text" />
+				<input pInputText id="phome" type="text" [(ngModel)]="phoneNumber"/>
 			</div>
-			<div class="field">
+			<!-- <div class="field">
 				<label htmlFor="password">Пароль</label>
-				<input pInputText id="password" type="text" />
+				<input pInputText id="password" type="text" [(ngModel)]="displayName"/>
 			</div>
 			
 			<div class="field">
 				<label htmlFor="password2">Повторите пароль</label>
-				<input pInputText id="password2" type="text" />
-			</div>
-			
-			<p-divider />
-<!-- 
-			<div class="mb-2">
-				<p-card header="Advanced Card" subheader="Card Subheader" >
-					<ng-template pTemplate="header">
-					</ng-template>
-					<p>
-						Lorem ipsum dolor sit amet...
-					</p>
-					<ng-template pTemplate="footer">
-						<div class="flex gap-3 mt-1">
-							<p-button label="Cancel" severity="secondary" class="w-full" styleClass="w-full" />
-							<p-button label="Save" class="w-full" styleClass="w-full" />
-						</div>
-					</ng-template>
-				</p-card>
+				<input pInputText id="password2" type="text" [(ngModel)]="displayName"/>
 			</div> -->
+
+			<p-button (click)="updateCurrentUser()">
+				Сохранить
+			</p-button>
 
 		</div>
 		

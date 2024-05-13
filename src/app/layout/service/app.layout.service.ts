@@ -69,7 +69,9 @@ export class LayoutService {
         this.mapElem = document.querySelector(".map");
         this.layoutMain = document.querySelector(".layout-main");
 
-        const lauoutWidth = this.layoutMain.getBoundingClientRect().width;
+        const lauoutWidth = this.layoutMain?.getBoundingClientRect().width;
+
+        if (!this.mapElem) return;
 
         setTimeout(() => {
             this.mapElem.style.width = `${lauoutWidth}px`;

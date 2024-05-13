@@ -5,7 +5,7 @@
   "targets": {
     "ruki-bb6c5": {
       "hosting": {
-        "sakai-ng": [
+        "ruki": [
           "ruki-bb6c5"
         ]
       }

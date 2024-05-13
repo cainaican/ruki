@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthModule } from '@angular/fire/auth';
+import { InputOtpModule } from 'primeng/inputotp';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from '@angular/fire/auth';
         FormsModule,
         PasswordModule,
         AuthModule,
+        InputOtpModule
     ],
     declarations: [LoginComponent]
 })

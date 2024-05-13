@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Auth, User, updateProfile } from '@angular/fire/auth';
+import { Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-cabinet',
@@ -6,27 +8,39 @@ import { Component } from '@angular/core';
   styleUrl: './cabinet.component.scss'
 })
 export class CabinetComponent {
-  selectedState: any = null;
 
-  states: any[] = [
-      {name: 'Arizona', code: 'Arizona'},
-      {name: 'California', value: 'California'},
-      {name: 'Florida', code: 'Florida'},
-      {name: 'Ohio', code: 'Ohio'},
-      {name: 'Washington', code: 'Washington'}
-  ];
+  public currentUser: User;
+  public displayName: string;
+  public email: string;
+  public phoneNumber: string;
+  public password: string;
 
-  dropdownItems = [
-      { name: 'Option 1', code: 'Option 1' },
-      { name: 'Option 2', code: 'Option 2' },
-      { name: 'Option 3', code: 'Option 3' }
-  ];
+  constructor(private _auth: Auth, private _store: Firestore){
+    // this.currentUser = structuredClone(this._auth.currentUser);
 
-  cities1: any[] = [];
+    this.displayName = this._auth.currentUser.displayName
+    this.email = this._auth.currentUser.email
+    this.phoneNumber = this._auth.currentUser.phoneNumber
 
-  cities2: any[] = [];
+    this.currentUser = this._auth.currentUser;
 
-  city1: any = null;
+  }
 
-  city2: any = null;
+  updateCurrentUser(){
+
+    const user = {...this._auth.currentUser, phoneNumber: this.phoneNumber }
+
+    updateProfile(this._auth.currentUser, {
+      displayName: this.displayName,
+      
+    })
+    .then((v) => {
+      debugger
+    })
+    .catch((e) => {
+      debugger
+    })
+  }
+
+
 }
