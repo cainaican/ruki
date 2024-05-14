@@ -94,12 +94,17 @@ export class AppTopBarComponent {
 
                         if(images.length === files.length) {
                             this.newWork.images = images;
+
+                            this.newWork.contact = this._auth.currentUser.displayName;
+                            this.newWork.phone = this._auth.currentUser.phoneNumber;
+
                             this._workService.saveWork(this.newWork);
                             this.newWork = {
                                 contact: "",
                                 price: null,
                                 userId: this._auth.currentUser.uid,
-                                location: null
+                                location: null,
+                                phone: null
                             };
                             this.visible = false;
 
