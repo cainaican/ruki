@@ -8,7 +8,7 @@ import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { FileUpload } from 'primeng/fileupload';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { debounceTime } from 'rxjs';
-
+import uniqid from 'uniqid';
 
 export interface INominatimFullAdress {
     house_number: string;
@@ -94,12 +94,19 @@ export class AppTopBarComponent {
 
                         if(images.length === files.length) {
                             this.newWork.images = images;
+
+                            this.newWork.contact = this._auth.currentUser.displayName;
+                            this.newWork.phone = this._auth.currentUser.phoneNumber;
+                            this.newWork.id = uniqid();
+
                             this._workService.saveWork(this.newWork);
                             this.newWork = {
                                 contact: "",
                                 price: null,
                                 userId: this._auth.currentUser.uid,
-                                location: null
+                                location: null,
+                                phone: null,
+                                id: null
                             };
                             this.visible = false;
 

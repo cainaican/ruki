@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Auth } from "@angular/fire/auth";
-import { CollectionReference, Firestore, collection, collectionData, getDocs, query, where } from "@angular/fire/firestore";
+import { CollectionReference, DocumentData, Firestore, QuerySnapshot, collection, collectionData, getDocs, query, where } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 
 export interface IUserItem {
@@ -24,7 +24,7 @@ export class AurthService {
         this.users$ = collectionData(this.usersCollection) as Observable<IUserItem[]>;
     }
 
-    getUserByPhoneNumber(number: string){
+    getUserByPhoneNumber(number: string): Promise<QuerySnapshot<unknown, DocumentData>> {
 
         const q = query(collection(this._store, "users"), where("phoneNumber", "==", number));
 

@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { IServerResponse } from '../api/product';
 import { IWork } from 'src/app/models/work';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, QuerySnapshot, addDoc, collection, collectionData, getDocs, query, where } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, QuerySnapshot, addDoc, collection, collectionData, deleteDoc, deleteField, doc, getDoc, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { StorageReference, getDownloadURL } from '@angular/fire/storage';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Injectable()
 export class WorksService {
@@ -19,6 +21,8 @@ export class WorksService {
     constructor(
         private _http: HttpClient,
         private _store: Firestore,
+        private _router: Router,
+        private _messageService: MessageService,
     ) {
         this.worksCollection = collection(this._store, "works");
         this.works$ = collectionData(this.worksCollection) as Observable<IWork[]>;
@@ -44,9 +48,44 @@ export class WorksService {
 
         if (!work) return;
 
-        addDoc(this.worksCollection, <IWork> work).then((documentReference: DocumentReference) => {
-            debugger
-        });
+        addDoc(this.worksCollection, <IWork> work)
+            .then((documentReference: DocumentReference) => {
+                window.location.reload();
+                this._messageService.add({severity: "success", detail: "Подработка успешно добавлена"});
+            })
+            .catch((e) => {
+                this._messageService.add({severity: "error", detail: "Возникли проблемы при добавлении подработки"});
+            })
+    }
+
+    deleteWork(work: IWork) {
+
+        if (!work) return null;
+
+        const q = query(collection(this._store, "works"), where("id", "==", work.id));
+
+        getDocs(q)
+            .then((v: QuerySnapshot<DocumentData, DocumentData>) => {
+
+                if (v.empty) {
+                    this._messageService.add({severity: "error", detail: "Не найдена подработка с таким id"});
+                    return null;
+                }
+
+                if (v.docs.length > 1) {
+                    this._messageService.add({severity: "error", detail: "Обнаружены одинаковые идентификаторы"});
+                    return null;
+                }
+
+                return deleteDoc(v.docs[0].ref);
+            })
+            .then((v) => {
+                window.location.reload();
+                this._messageService.add({severity: "success", detail: "Подработка успешно удалена"});
+            })
+            .catch((e) => {
+                this._messageService.add({severity: "error", detail: "Обнаружена ошибка при удалении"});
+            });
     }
 
     getImageLinks(url: StorageReference ): Promise<string> {

@@ -3,6 +3,7 @@ import { WorksService } from '../../service/works.service';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IWork } from 'src/app/models/work';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-list',
@@ -31,17 +32,17 @@ export class ListComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private worksService: WorksService, 
-    private messageService: MessageService,
-    private cdr: ChangeDetectorRef
+    private _worksService: WorksService, 
+    private _messageService: MessageService,
+    private _cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-    const sub = this.worksService.getAllWorks().subscribe({
+    const sub = this._worksService.getAllWorks().subscribe({
       next: (value) => {
         this.works = value;
 
-        this.cdr.markForCheck();
+        this._cdr.markForCheck();
 
         // this.worksService.getImageLinks()
           // .then((url: string) => {
@@ -70,11 +71,11 @@ export class ListComponent implements OnInit, OnDestroy {
           //       // Unknown error occurred, inspect the server response
           //       break;
           //   }
-          // })
+        // })
 
       },
       error: (e) => {
-        this.messageService.add({detail: e.message, severity: "error"});
+        this._messageService.add({detail: e.message, severity: "error"});
       }
     })
     
@@ -84,6 +85,13 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(s => s.unsubscribe);
+  }
+
+  getPhoneNumber(work: IWork) {
+    alert(`
+      Имя: ${work.contact}
+      Телефон: ${work.phone}
+    `);
   }
 
 //   getSeverity(product: IServerResponse) {
