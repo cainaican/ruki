@@ -84,7 +84,13 @@
 											<span class="text-xl font-semibold text-900">{{ '₽' + item.price }}</span>
 											<div class="flex flex-row-reverse md:flex-row gap-2">
 												<!-- <p-button icon="pi pi-heart" [outlined]="true" /> -->
-												<p-button icon="pi pi-phone" class="flex-auto md:flex-initial white-space-nowrap" label="Получить контакт" [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" />
+												<p-button 
+													severity="danger" 
+													icon="pi pi-times" 
+													class="flex-auto md:flex-initial white-space-nowrap" 
+													label="Удалить подработку"
+													(click)="deleteWork(item)"
+												/>
 											</div>
 										</div>
 									</div>

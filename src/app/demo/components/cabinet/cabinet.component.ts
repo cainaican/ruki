@@ -60,5 +60,9 @@ export class CabinetComponent implements OnInit {
     })
   }
 
+  deleteWork(work: IWork){
+    this._worksService.deleteWork(work);
+  }
+
 
 }
