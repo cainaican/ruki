@@ -83,14 +83,14 @@ export class LayoutService {
 
         if(this.isDesktop()){
             if (this.state.staticMenuDesktopInactive) {
-                this.mapElem.style.left = "0px";
+                // this.mapElem.style.left = "0px";
                 return;
             }
             if(this.state.staticMenuMobileActive) {
-                this.mapElem.style.left = "0px";
+                // this.mapElem.style.left = "0px";
                 return;
             }
-            this.mapElem.style.left = "350px";
+            // this.mapElem.style.left = "350px";
 
         }
 
@@ -124,12 +124,12 @@ export class LayoutService {
                 !this.state.staticMenuDesktopInactive;
 
             if (this.state.staticMenuDesktopInactive) {
-                this.mapElem.style.left = "0px";
-                this.mapElem.style.marginLeft = "30px";
+                // this.mapElem.style.left = "0px";
+                // this.mapElem.style.marginLeft = "30px";
                 return;
             }
-            this.mapElem.style.left = "350px";
-            this.mapElem.style.marginLeft = "0px";
+            // this.mapElem.style.left = "350px";
+            // this.mapElem.style.marginLeft = "0px";
 
 
         } else {
@@ -140,12 +140,12 @@ export class LayoutService {
                 this.overlayOpen.next(null);
             }
             if (this.state.staticMenuMobileActive) {
-                this.mapElem.style.left = "350px";
-                this.mapElem.style.marginLeft = "0px";
+                // this.mapElem.style.left = "350px";
+                // this.mapElem.style.marginLeft = "0px";
                 return;
             }
-            this.mapElem.style.left = "0px";
-            this.mapElem.style.marginLeft = "30px";
+            // this.mapElem.style.left = "0px";
+            // this.mapElem.style.marginLeft = "30px";
         }
 
 

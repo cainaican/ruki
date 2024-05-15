@@ -12,6 +12,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { GalleriaModule } from 'primeng/galleria';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @NgModule({
   declarations: [CabinetComponent],
@@ -27,7 +29,9 @@ import { TagModule } from 'primeng/tag';
     DataViewModule,
     TagModule,
     SkeletonModule,
-    GalleriaModule
+    GalleriaModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ]
 })
 export class CabinetModule { }

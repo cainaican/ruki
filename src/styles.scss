@@ -14,6 +14,11 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/code.scss";
 @import "node_modules/ol/ol.css";
 
+html {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
 .map {
     position: fixed;
     height: calc(100% - 130px);

@@ -3,26 +3,29 @@
 		<div class="card p-fluid">
 			<h5>Основная информация</h5>
 			<div class="field">
-				<label htmlFor="name">Имя</label>
+				<label htmlFor="name">Имя пользователя</label>
 				<input pInputText id="name" type="text" [(ngModel)]="displayName"/>
 			</div>
 			<!-- <div class="field">
-				<label htmlFor="email">Почта</label>
-				<input pInputText id="email" type="text" [(ngModel)]="email"/>
+				<p-inputGroup class="w-full md:w-30rem">
+					<input 
+						pInputText 
+						id="name" 
+						type="text"
+						pInputText 
+						placeholder="Имя пользователя" 
+						[(ngModel)]="displayName"
+						[disabled]="editingNameOn"
+					/>
+					<p-inputGroupAddon>
+						<i class="pi pi-pencil" (click)="toggleEditName()"></i>
+					</p-inputGroupAddon>
+				</p-inputGroup>
 			</div> -->
 			<div class="field">
 				<label htmlFor="phome">Номер мобильного</label>
 				<input pInputText id="phome" type="text" [(ngModel)]="phoneNumber"/>
 			</div>
-			<!-- <div class="field">
-				<label htmlFor="password">Пароль</label>
-				<input pInputText id="password" type="text" [(ngModel)]="displayName"/>
-			</div>
-			
-			<div class="field">
-				<label htmlFor="password2">Повторите пароль</label>
-				<input pInputText id="password2" type="text" [(ngModel)]="displayName"/>
-			</div> -->
 
 			<p-button (click)="updateCurrentUser()">
 				Сохранить
