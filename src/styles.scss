@@ -19,6 +19,10 @@ html {
     margin: 0 auto;
 }
 
+body {
+    --scrollbar-width: 0px !important;
+}
+
 .map {
     position: fixed;
     height: calc(100% - 130px);

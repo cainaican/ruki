@@ -14,6 +14,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ImageModule } from 'primeng/image';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 @NgModule({
   declarations: [CabinetComponent],
@@ -31,7 +34,10 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     SkeletonModule,
     GalleriaModule,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    ImageModule,
+    AvatarModule,
+    AvatarGroupModule
   ]
 })
 export class CabinetModule { }

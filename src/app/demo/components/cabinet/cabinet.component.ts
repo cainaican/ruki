@@ -19,6 +19,9 @@ export class CabinetComponent implements OnInit {
 
   public userWorks: IWork[];
 
+  public editingEnabled = false;
+  public editingButtonIcon = "pi pi-pencil";
+
   constructor(
     private _auth: Auth, 
     private _store: Firestore,
@@ -30,6 +33,7 @@ export class CabinetComponent implements OnInit {
     this.phoneNumber = this._auth.currentUser.phoneNumber
 
     this.currentUser = this._auth.currentUser;
+    
 
   }
 
@@ -53,15 +57,28 @@ export class CabinetComponent implements OnInit {
       
     })
     .then((v) => {
-      debugger
+      this.displayName = this._auth.currentUser.displayName;
+      this._messageService.add({severity: "success", detail: "Данные обновлены", summary: "Данные"})
     })
     .catch((e) => {
-      debugger
+      this._messageService.add({severity: "error", detail: "Произошла оишбка при обновлении данных", summary: "Данные"})
     })
   }
 
   deleteWork(work: IWork){
     this._worksService.deleteWork(work);
+  }
+
+  toggleEditing() {
+    if (this.editingEnabled) {
+      this.updateCurrentUser();
+      this.editingButtonIcon = "pi pi-pencil";
+      this.editingEnabled = false;
+      return;
+    }
+    this.editingEnabled = true;
+    this.editingButtonIcon = "pi pi-save";
+
   }
 
 

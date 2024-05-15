@@ -1,43 +1,96 @@
-<div class="grid">
+<div class="grid" *ngIf="currentUser">
 	<div class="col-12 md:col-6 ">
-		<div class="card p-fluid">
-			<h5>Основная информация</h5>
-			<div class="field">
-				<label htmlFor="name">Имя пользователя</label>
-				<input pInputText id="name" type="text" [(ngModel)]="displayName"/>
-			</div>
-			<!-- <div class="field">
-				<p-inputGroup class="w-full md:w-30rem">
-					<input 
-						pInputText 
-						id="name" 
-						type="text"
-						pInputText 
-						placeholder="Имя пользователя" 
-						[(ngModel)]="displayName"
-						[disabled]="editingNameOn"
-					/>
-					<p-inputGroupAddon>
-						<i class="pi pi-pencil" (click)="toggleEditName()"></i>
-					</p-inputGroupAddon>
-				</p-inputGroup>
-			</div> -->
-			<div class="field">
-				<label htmlFor="phome">Номер мобильного</label>
-				<input pInputText id="phome" type="text" [(ngModel)]="phoneNumber"/>
+		<div class="card p-fluid" style="position: relative;">
+			<h5 style="font-weight: 600;">Основная информация</h5>
+
+			<div class="flex" *ngIf="!editingEnabled; else editingEnabledTemplate">
+				<div class="flex justify-content-center" style="margin: auto 0;">
+					<div *ngIf="currentUser.photoURL; else noPhoto">
+						<p-avatar 
+							image="currentUser.photoURL" 
+							styleClass="mx-auto" 
+							size="xlarge" 
+							shape="circle"
+						/>
+					</div>
+					<ng-template #noPhoto>
+						<p-avatar
+							icon="pi pi-user" 
+							styleClass="mx-auto" 
+							size="xlarge" 
+							shape="circle"
+						/>
+					</ng-template>
+				</div>
+				<div class="flex" style="flex-direction: column; ">
+					<div style="margin: 5px 0px ;">
+						<label style="padding: 5px 20px;" htmlFor="name">Имя пользователя</label>
+						<span style="padding: 5px 20px; font-weight: 600;">{{displayName}}</span>
+						<!-- <input pInputText id="name" type="text" [(ngModel)]="displayName"/> -->
+					</div>
+
+					<div style="margin: 5px 0px ;">
+						<label style="padding: 5px 20px;" htmlFor="phome">Номер мобильного</label>
+						<span style="padding: 5px 20px; font-weight: 600;">{{phoneNumber}}</span>
+						<!-- <input pInputText id="phome" type="text" [(ngModel)]="phoneNumber"/> -->
+					</div>
+
+				</div>
 			</div>
 
-			<p-button (click)="updateCurrentUser()">
-				Сохранить
-			</p-button>
+			<ng-template #editingEnabledTemplate>
+				<div class="flex">
+					<div class="flex justify-content-center" style="margin: auto 0;">
+						<div *ngIf="currentUser.photoURL; else noPhoto">
+							<p-avatar 
+								image="currentUser.photoURL" 
+								styleClass="mx-auto" 
+								size="xlarge" 
+								shape="circle"
+							/>
+						</div>
+						<ng-template #noPhoto>
+							<p-avatar
+								icon="pi pi-user" 
+								styleClass="mx-auto" 
+								size="xlarge" 
+								shape="circle"
+							/>
+						</ng-template>
+					</div>
+					<div class="flex" style="flex-direction: column; ">
+						<div class="field" style="margin: 5px 0px ;">
+							<label style="padding: 5px 20px;" htmlFor="name">Имя пользователя</label>
+							<input style="margin: 0px 20px;" pInputText id="name" type="text" [(ngModel)]="displayName"/>
+						</div>
+	
+						<div class="field" style="margin: 5px 0px ;">
+							<label style="padding: 5px 20px;" htmlFor="phome">Номер мобильного</label>
+							<span style="padding: 5px 20px; font-weight: 600;">{{phoneNumber}}</span>
+
+							<!-- <input style="margin: 0px 20px;" pInputText id="phome" type="text" [(ngModel)]="phoneNumber"/> -->
+						</div>
+	
+					</div>
+				</div>
+	
+			</ng-template>
+
+			<p-button 
+					style="position: absolute;right: 8px;bottom: 8px;" 
+					icon="{{editingButtonIcon}}" 
+					[rounded]="true"  
+					(click)="toggleEditing()"
+			/>
+
 
 		</div>
 		
-		
 	</div>
+
 	<div class="col-12 md:col-6">
 		<div class="card p-fluid">
-			<h5>Мои подработки</h5>
+			<h5 style="font-weight: 600;">Мои подработки</h5>
 			<div class="card">
 				<p-dataView #dv [value]="userWorks" [rows]="10" [paginator]="true">
 					<ng-template pTemplate="list" let-works>
