@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { ApplicationVerifier, Auth, RecaptchaVerifier, User, getAuth, signInWithPhoneNumber, signOut, updateProfile, user } from '@angular/fire/auth';
+import { ApplicationVerifier, Auth, RecaptchaVerifier, User, signInWithPhoneNumber, signOut, updateProfile, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { AurthService } from 'src/app/demo/service/auth.service';
+import { AuthService } from 'src/app/demo/service/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -46,7 +46,7 @@ export class LoginComponent implements OnDestroy, OnInit {
         public _layoutService: LayoutService, 
         private _messageService: MessageService,
         private _router: Router,
-        private _aurthService: AurthService,
+        private _aurthService: AuthService,
     ) { 
         this.userSubscription = this.user$.subscribe((aUser: User | null) => {
             if (aUser) {
@@ -120,20 +120,8 @@ export class LoginComponent implements OnDestroy, OnInit {
     signInWithPhoneNumber(): void {
 
         this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
-        
-        if (this.passwordString.length < 6) {
-            const mes: Message = {detail: "Пароль должен быть более 6 символов", severity: "error", summary: "Регистрация"};
-            this._messageService.add(mes);
-            return;
-        }
 
-        if (this.passwordString !== this.passwordRepeatString) {
-            const mes: Message = {detail: "Пароли не совпадают", severity: "error", summary: "Регистрация"};
-            this._messageService.add(mes);
-            return;
-        }
-
-       this._aurthService.getUserByPhoneNumber(this.phoneNumber)
+        this._aurthService.getUserByPhoneNumber(this.phoneNumber)
             .then((v) => {
                 if (v.empty) {
             
@@ -167,26 +155,6 @@ export class LoginComponent implements OnDestroy, OnInit {
 
                 this._messageService.add(mes);
             })
-
-        // return;
-
-        // this.appVerifierOpened = true;
-
-        // signInWithPhoneNumber(this.auth, this.phoneNumber, this.appVerifier)
-        //     .then(confirmationResult => {
-
-        //         debugger
-        //         (window as any).confirmationResult = confirmationResult;
-
-        //         this.appVerifierOpened = false;
-
-        //         this.verificationOpened = true;
-
-        //     })
-        //     .catch((e) => {
-        //         const mes: Message = {detail: e.message, severity: "error", summary: "Регистрация"}
-        //         this._messageService.add(mes);
-        //     })
         
     }
 

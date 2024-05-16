@@ -19,7 +19,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-import { AurthService } from './demo/service/auth.service';
+import { AuthService } from './demo/service/auth.service';
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [
@@ -35,7 +35,7 @@ import { AurthService } from './demo/service/auth.service';
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, WorksService,
-        WorkRegisterService,MessageService, AurthService
+        WorkRegisterService,MessageService, AuthService
     ],
     bootstrap: [AppComponent],
 })

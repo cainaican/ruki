@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Auth } from "@angular/fire/auth";
+import { Auth, User, updatePassword } from "@angular/fire/auth";
 import { CollectionReference, DocumentData, Firestore, QuerySnapshot, collection, collectionData, getDocs, query, where } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 
@@ -11,7 +11,7 @@ export interface IUserItem {
 }
 
 @Injectable()
-export class AurthService {
+export class AuthService {
 
     private usersCollection: CollectionReference;
     private users$: Observable<IUserItem[]>;
