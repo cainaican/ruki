@@ -77,7 +77,7 @@ export class LoginComponent implements OnDestroy, OnInit {
 
         this._aurthService.getUserByPhoneNumber(this.phoneNumber)
             .then((v) => {
-                if (!v.empty) {
+                if (v.empty) {
             
                     this.appVerifierOpened = true;
 

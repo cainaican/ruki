@@ -40,3 +40,15 @@ body {
     margin: 0 5px;
     text-align: center;
 }
+
+.p-galleria-item-nav {
+    top: calc(50% - 28px);
+    color: black;
+}
+
+.p-galleria-item-prev {
+    left: -45px;
+}
+.p-galleria-item-next {
+    right: -45px;
+}
