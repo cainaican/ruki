@@ -94,8 +94,26 @@
                 <div [ngStyle]="{'display': getDisplay()}" id="recaptcha-container" style="margin: 10px; justify-content: center;"></div>
 
                 <div  *ngIf="verificationOpened" class="card flex justify-content-center gap-2" style="flex-direction: column;">
-                    <p-inputOtp [(ngModel)]="verificationCode" [length]="6" 
-                    class="custom-otp-input" />
+                    <p-inputOtp 
+                        [(ngModel)]="verificationCode" 
+                        [length]="6" 
+                        class="custom-otp-input"
+
+                    >
+                        <ng-template pTemplate="input" let-token let-events="events" let-index="index">
+                            <input 
+                                pInputText
+                                type="text" 
+                                [maxLength]="1" 
+                                (input)="events.input($event)" 
+                                (keydown)="events.keydown($event)" 
+                                [attr.value]="token" 
+                                class="custom-otp-input" 
+                                type="tel" inputmode="tel"
+                                />
+                            
+                        </ng-template>
+                    </p-inputOtp>
                     <button pButton pRipple label="Отправить код" class=" p-3 bg-transparent text-primary border-none text-xl" (click)="verifyCode()"></button>
                 </div>
             </div>
