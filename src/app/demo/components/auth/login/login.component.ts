@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/demo/service/auth.service';
+import { DocumentReference } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-login',
@@ -77,7 +78,8 @@ export class LoginComponent implements OnDestroy, OnInit {
 
         this._aurthService.getUserByPhoneNumber(this.phoneNumber)
             .then((v) => {
-                if (v.empty) {
+
+                if (!v.empty) {
             
                     this.appVerifierOpened = true;
 
@@ -144,6 +146,12 @@ export class LoginComponent implements OnDestroy, OnInit {
 
                 this.verificationOpened = true;
 
+                return this._aurthService.saveUser({name: this.loginString, phoneNumber: this.phoneNumber,userId: this.auth.currentUser.uid});
+
+            })
+            .then((documentReference: DocumentReference) => {
+                this._messageService.add({severity: "success", detail: "Вы успешно зарегистрированы"});
+                return this.navigateToMainPage();
             })
             .catch((e) => {
 

@@ -42,6 +42,19 @@ body {
     text-align: center;
 }
 
+
+
+@media (max-width: 991px) {
+    .custom-otp-input .p-inputtext {
+        width: 25px;
+        height: 25px;
+        padding: 0;
+    }
+    .p-paginator .p-paginator-first, .p-paginator .p-paginator-prev, .p-paginator .p-paginator-next, .p-paginator .p-paginator-last {
+        min-width: 2rem;
+    }
+}
+
 // .p-galleria-item-nav {
 //     top: calc(50% - 28px);
 //     color: black;
