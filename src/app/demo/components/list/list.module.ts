@@ -8,7 +8,8 @@ import { TagModule } from 'primeng/tag';
 import { WorksService } from '../../service/works.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { GalleriaModule } from 'primeng/galleria';
-
+import { DialogModule } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [ListComponent],
   imports: [
@@ -18,7 +19,9 @@ import { GalleriaModule } from 'primeng/galleria';
     ButtonModule,
     TagModule,
     SkeletonModule,
-    GalleriaModule
+    GalleriaModule,
+    DialogModule,
+    CardModule
   ],
   providers: [WorksService]
 })

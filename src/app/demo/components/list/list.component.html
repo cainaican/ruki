@@ -2,7 +2,7 @@
     <p-dataView #dv [value]="works" [rows]="10" [paginator]="true">
         <ng-template pTemplate="list" let-works>
             <div class="grid grid-nogutter">
-                <div class="col-12" *ngFor="let item of works; let first = first" class="col-12">
+                <div class="col-12" *ngFor="let item of works; let first = first" class="col-12" >
                     <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3" [ngClass]="{ 'border-top-1 surface-border': !first }">
                         <div class="md:w-10rem relative">
                                 <ng-container *ngIf="item.images; else skeletonImg" >
@@ -12,7 +12,7 @@
                                         [containerStyle]="{ 'max-width': '640px' }" 
                                         [numVisible]="5"
                                         [showItemNavigators]="true" 
-                                        [showThumbnails]="false" 
+                                        [showThumbnails]="false"
                                         >
                                         <ng-template pTemplate="item" let-item>
                                             <img [src]="item.itemImageSrc" style="width: 100%;" />
@@ -30,10 +30,10 @@
                                 <p-skeleton width="10rem" height="6rem"></p-skeleton>
                             </ng-template>
                         </div>
-                        <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
+                        <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4" (click)="openCard($event, item)">
                             <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2" style="padding-left: 20px;">
                                 <div>
-                                    <span class="font-medium text-secondary text-sm">{{ item.customerName }}</span>
+                                    <span class="font-medium text-secondary text-sm">{{ item.contact }}</span>
                                     <div class="text-lg font-medium text-900 mt-2">{{ item.description }}</div>
                                 </div>
                                 <div class="surface-100 p-1" style="border-radius: 30px">
@@ -51,7 +51,7 @@
                                         icon="pi pi-phone" 
                                         class="flex-auto md:flex-initial white-space-nowrap" 
                                         label="Получить контакт"
-                                        (click)="getPhoneNumber(item)"
+                                        (click)="getPhoneNumber($event, item)"
                                      />
                                 </div>
                             </div>
@@ -62,3 +62,38 @@
         </ng-template>
     </p-dataView>
 </div>
+
+<ng-template [ngIf]="visibleWork">
+    <p-dialog header="Карточка подработки"
+            [modal]="true" 
+            [(visible)]="visible"
+            [style]="{ width: '35rem' }"
+            (onHide)="onHide()"
+>
+        <p-card [header]="visibleWork.contact" [subheader]="visibleWork.address">
+            <ng-template pTemplate="header">
+                <p-galleria 
+                    [(value)]="visibleWork.images"
+                    [responsiveOptions]="responsiveOptions"
+                    [containerStyle]="{ 'max-width': '640px' }" 
+                    [numVisible]="5"
+                    [showItemNavigators]="true" 
+                    [showThumbnails]="false" 
+                    >
+                    <ng-template pTemplate="item" let-item>
+                        <img [src]="item.itemImageSrc" style="width: 100%;" />
+                    </ng-template>
+                </p-galleria>
+            </ng-template>
+            <p>
+                {{visibleWork.description}}
+            </p>
+            <ng-template pTemplate="footer">
+                <div class="flex gap-3 mt-1">
+                    <p-button label="Показать контакты" class="w-full" styleClass="w-full" (click)="getPhoneNumber($event, visibleWork)"/>
+                </div>
+            </ng-template>
+        </p-card>
+    </p-dialog>
+
+</ng-template>

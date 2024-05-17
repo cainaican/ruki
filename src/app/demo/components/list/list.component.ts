@@ -30,6 +30,8 @@ export class ListComponent implements OnInit, OnDestroy {
         numVisible: 1
     }
   ];
+  visible: boolean = false;
+  visibleWork: IWork = null;
 
   constructor(
     private _worksService: WorksService, 
@@ -41,38 +43,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const sub = this._worksService.getAllWorks().subscribe({
       next: (value) => {
         this.works = value;
-
         this._cdr.markForCheck();
-
-        // this.worksService.getImageLinks()
-          // .then((url: string) => {
-            // this.works[0].images = url;
-
-            // this.images
-          //   this.cdr.markForCheck();
-          // })
-          // .catch((error) => {
-          //   // A full list of error codes is available at
-          //   // https://firebase.google.com/docs/storage/web/handle-errors
-          //   switch (error.code) {
-          //       case 'storage/object-not-found':
-          //           // File doesn't exist
-          //           break;
-          //       case 'storage/unauthorized':
-          //           // User doesn't have permission to access the object
-          //           break;
-          //       case 'storage/canceled':
-          //           // User canceled the upload
-          //           break;
-            
-          //       // ...
-        
-          //   case 'storage/unknown':
-          //       // Unknown error occurred, inspect the server response
-          //       break;
-          //   }
-        // })
-
       },
       error: (e) => {
         this._messageService.add({detail: e.message, severity: "error"});
@@ -87,26 +58,22 @@ export class ListComponent implements OnInit, OnDestroy {
     this.subs.forEach(s => s.unsubscribe);
   }
 
-  getPhoneNumber(work: IWork) {
+  getPhoneNumber(event: Event, work: IWork) {
+    event.stopPropagation();
     alert(`
       Имя: ${work.contact}
       Телефон: ${work.phone}
     `);
   }
 
-//   getSeverity(product: IServerResponse) {
-//       switch (product.inventoryStatus) {
-//           case 'INSTOCK':
-//               return 'success';
+  openCard(event: Event, item: IWork) {
+    this.visible = true;
+    this.visibleWork = item;
+  }
 
-//           case 'LOWSTOCK':
-//               return 'warning';
+  onHide() {
+    this.visibleWork = null; 
+  }
 
-//           case 'OUTOFSTOCK':
-//               return 'danger';
 
-//           default:
-//               return null;
-//       }
-//   };
 }
