@@ -42,16 +42,19 @@ export class Work {
 		this._vectorPoint = new VectorLayer({
 			source: new VectorSource({
 				features: [
-				new Feature({
-					geometry: new Point(this._domainModel.location),
-				}),
-			],
+					new Feature({
+						geometry: new Point(this._domainModel.location),
+						workId: this._domainModel.id
+					}),
+				],
 			}),
+
 			style: new Style({
 				image: new CircleStyle({
 				  radius: 5,
 				  fill: new Fill({color: 'rgba(255, 0, 0, 0.1)'}),
 				  stroke: new Stroke({color: 'red', width: 1}),
+				  
 				}),
 				text: new Text({
 				  font: '13px Calibri,sans-serif',
@@ -66,6 +69,7 @@ export class Work {
 					color: [168, 50, 153, 0.6],
 				  }),
 				  padding: [2, 2, 2, 2],
+
 				}),
 			  })
 		});
@@ -75,5 +79,9 @@ export class Work {
 
 	getVectorPoint() {
 		return this._vectorPoint;
+	}
+
+	getDomainModel() {
+		return this._domainModel;
 	}
 }

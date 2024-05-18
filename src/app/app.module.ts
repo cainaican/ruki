@@ -11,7 +11,6 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { WorkRegisterService } from './services/work-register.service';
 import { environment } from 'src/environments/environment';
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -35,7 +34,7 @@ import { AuthService } from './demo/service/auth.service';
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, WorksService,
-        WorkRegisterService,MessageService, AuthService
+        MessageService, AuthService
     ],
     bootstrap: [AppComponent],
 })
