@@ -19,9 +19,7 @@ export class AuthService {
     private users$: Observable<IUserItem[]>;
 
     constructor(
-        private _auth: Auth,
         private _store: Firestore,
-        private _messageService: MessageService,
     ) { 
         this.usersCollection = collection(this._store, "users");
         this.users$ = collectionData(this.usersCollection) as Observable<IUserItem[]>;

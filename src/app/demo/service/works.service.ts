@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { StorageReference, getDownloadURL } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { EPubSubEvents, PubSubService } from './pub-sub.service';
 
 @Injectable()
 export class WorksService {
@@ -23,6 +24,7 @@ export class WorksService {
         private _store: Firestore,
         private _router: Router,
         private _messageService: MessageService,
+        private _pubSubService: PubSubService<EPubSubEvents>,
     ) {
         this.worksCollection = collection(this._store, "works");
         this.works$ = collectionData(this.worksCollection) as Observable<IWork[]>;
@@ -50,7 +52,10 @@ export class WorksService {
 
         addDoc(this.worksCollection, <IWork> work)
             .then((documentReference: DocumentReference) => {
-                window.location.reload();
+                // window.location.reload();
+
+                this._pubSubService.sub.next(EPubSubEvents.defaultUpdate);
+                
                 this._messageService.add({severity: "success", detail: "Подработка успешно добавлена"});
             })
             .catch((e) => {
@@ -80,7 +85,9 @@ export class WorksService {
                 return deleteDoc(v.docs[0].ref);
             })
             .then((v) => {
-                window.location.reload();
+                // window.location.reload();
+                this._pubSubService.sub.next(EPubSubEvents.defaultUpdate);
+
                 this._messageService.add({severity: "success", detail: "Подработка успешно удалена"});
             })
             .catch((e) => {

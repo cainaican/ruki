@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Auth, User, updateProfile } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { WorksService } from '../../service/works.service';
 import { IWork } from 'src/app/models/work';
 import { MessageService } from 'primeng/api';
+import { EPubSubEvents, PubSubService } from '../../service/pub-sub.service';
 
 @Component({
   selector: 'app-cabinet',
@@ -27,17 +28,29 @@ export class CabinetComponent implements OnInit {
     private _store: Firestore,
     private _worksService: WorksService,
     private _messageService: MessageService,
+    private _pubSubService: PubSubService<EPubSubEvents>,
   ){
 
+    this.defaultUpdate = this.defaultUpdate.bind(this);
+  }
+
+  ngOnInit(){
+
+    this._pubSubService.sub.subscribe({
+      next: () => {
+        this.defaultUpdate();
+      },
+      error:(e) => {
+        console.log("cabinet comp, redirect error");
+      }
+    });
+
+    
     this.displayName = this._auth.currentUser.displayName
     this.phoneNumber = this._auth.currentUser.phoneNumber
 
     this.currentUser = this._auth.currentUser;
-    
 
-  }
-
-  ngOnInit(){
     this._worksService.getUsersWorks(this._auth.currentUser.uid)
       .then((v) => {
         if(v.empty) return;
@@ -79,6 +92,11 @@ export class CabinetComponent implements OnInit {
     this.editingEnabled = true;
     this.editingButtonIcon = "pi pi-save";
 
+  }
+
+  defaultUpdate(){
+    this.ngOnDestroy();
+    this.ngOnInit();
   }
 
 
