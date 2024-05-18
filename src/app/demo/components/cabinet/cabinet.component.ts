@@ -11,7 +11,7 @@ import { EPubSubEvents, PubSubService } from '../../service/pub-sub.service';
   templateUrl: './cabinet.component.html',
   styleUrl: './cabinet.component.scss'
 })
-export class CabinetComponent implements OnInit {
+export class CabinetComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
   public displayName: string;
@@ -59,6 +59,10 @@ export class CabinetComponent implements OnInit {
       .catch((e) => {
         this._messageService.add({detail: "Ошибка при получении подработок", severity: "error", summary: "Подработки"})
       })
+  }
+
+  ngOnDestroy(): void {
+    // this._pubSubService.sub.unsubscribe();
   }
 
   updateCurrentUser(){
