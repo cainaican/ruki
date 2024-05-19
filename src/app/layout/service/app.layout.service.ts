@@ -138,10 +138,11 @@ export class LayoutService {
 
             if (this.state.staticMenuMobileActive) {
                 this.overlayOpen.next(null);
+                this.mapElem.style.marginLeft = "5px";
             }
             if (this.state.staticMenuMobileActive) {
                 // this.mapElem.style.left = "350px";
-                // this.mapElem.style.marginLeft = "0px";
+                this.mapElem.style.marginLeft = "5px";
                 return;
             }
             // this.mapElem.style.left = "0px";

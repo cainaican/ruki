@@ -66,7 +66,7 @@ export class AppLayoutComponent implements OnDestroy {
             const mapElem: HTMLDivElement = document.querySelector(".map");
             if (mapElem) {
                 mapElem.style.left = "0px";
-                mapElem.style.marginLeft = "30px";
+                // mapElem.style.marginLeft = "30px";
             }
 
             this.menuOutsideClickListener();
