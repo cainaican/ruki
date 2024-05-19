@@ -106,7 +106,7 @@ export class AppTopBarComponent {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             if (file) {
-                const pathToImage = `images/${this._auth.currentUser.email}_${this._auth.currentUser.uid}/work_${i}${new Date().getTime()}`
+                const pathToImage = `images/${this._auth.currentUser.phoneNumber}_${this._auth.currentUser.uid}/work_${i}${new Date().getTime()}`
                 const storageRef = ref(this._storage, pathToImage);
                 
                 uploadBytesResumable(storageRef, file).then(v => {
