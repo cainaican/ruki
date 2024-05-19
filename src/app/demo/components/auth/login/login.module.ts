@@ -9,6 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthModule } from '@angular/fire/auth';
 import { InputOtpModule } from 'primeng/inputotp';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { InputOtpModule } from 'primeng/inputotp';
         FormsModule,
         PasswordModule,
         AuthModule,
-        InputOtpModule
+        InputOtpModule,
+        InputMaskModule
     ],
     declarations: [LoginComponent]
 })

@@ -74,7 +74,8 @@ export class LoginComponent implements OnDestroy, OnInit {
     }
 
     login(): void {
-        this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
+
+        if(!this.validatePhoneNumber()) return;
 
         this._aurthService.getUserByPhoneNumber(this.phoneNumber)
             .then((v) => {
@@ -88,7 +89,7 @@ export class LoginComponent implements OnDestroy, OnInit {
 
                 const errMessage = "Пользователя с таким номером мобильного не существует";
 
-                this._messageService.add({severity: "error", detail: errMessage, summary: "Регистрация"});
+                this._messageService.add({severity: "error", detail: errMessage, summary: "Вход"});
 
                 throw new Error(errMessage);
             })
@@ -120,6 +121,10 @@ export class LoginComponent implements OnDestroy, OnInit {
     }
 
     signInWithPhoneNumber(): void {
+
+        if(!this.validatePhoneNumber()) return;
+        
+        if(!this.validateName()) return;
 
         this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
 
@@ -197,5 +202,30 @@ export class LoginComponent implements OnDestroy, OnInit {
             // this.messageService.add(mes);
             this._router.navigateByUrl("/");
         })
+    }
+
+    validatePhoneNumber(): boolean {
+
+        if(!this.phoneNumber || this.phoneNumber.length !== 16) {
+            this._messageService.add({severity: "error", detail: "Введите корректный номер телефона", summary: "Ошибка входа"});
+            return false;
+        }
+
+        this.phoneNumber = this.phoneNumber
+            .replaceAll("-", "")
+            .replaceAll("(", "")
+            .replaceAll(")", "");
+
+            return true;
+    }
+
+    validateName(): boolean {
+
+        if(!this.loginString) {
+            this._messageService.add({severity: "error", detail: "Введите имя пользователя", summary: "Ошибка регистрации"});
+            return false;
+        }
+
+        return true;
     }
 }
