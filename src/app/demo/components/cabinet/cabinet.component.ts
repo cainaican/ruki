@@ -5,6 +5,8 @@ import { WorksService } from '../../service/works.service';
 import { IWork } from 'src/app/models/work';
 import { MessageService } from 'primeng/api';
 import { EPubSubEvents, PubSubService } from '../../service/pub-sub.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cabinet',
@@ -19,9 +21,12 @@ export class CabinetComponent implements OnInit, OnDestroy {
   public password: string;
 
   public userWorks: IWork[];
+  public subs: Subscription[] = [];
 
   public editingEnabled = false;
   public editingButtonIcon = "pi pi-pencil";
+
+
 
   constructor(
     private _auth: Auth, 
@@ -29,6 +34,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
     private _worksService: WorksService,
     private _messageService: MessageService,
     private _pubSubService: PubSubService<EPubSubEvents>,
+    private _router: Router,
   ){
 
     this.defaultUpdate = this.defaultUpdate.bind(this);
@@ -36,7 +42,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   ngOnInit(){
 
-    this._pubSubService.sub.subscribe({
+    const sub = this._pubSubService.sub.subscribe({
       next: () => {
         this.defaultUpdate();
       },
@@ -44,7 +50,6 @@ export class CabinetComponent implements OnInit, OnDestroy {
         console.log("cabinet comp, redirect error");
       }
     });
-
     
     this.displayName = this._auth.currentUser.displayName
     this.phoneNumber = this._auth.currentUser.phoneNumber
@@ -59,10 +64,12 @@ export class CabinetComponent implements OnInit, OnDestroy {
       .catch((e) => {
         this._messageService.add({detail: "Ошибка при получении подработок", severity: "error", summary: "Подработки"})
       })
+
+      this.subs.push(sub);
   }
 
   ngOnDestroy(): void {
-    // this._pubSubService.sub.unsubscribe();
+    this.subs.forEach(s => s.unsubscribe());
   }
 
   updateCurrentUser(){
@@ -99,8 +106,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
 
   defaultUpdate(){
+
     this.ngOnDestroy();
-    this.ngOnInit();
+
+    this._router.navigateByUrl("cabinet", {
+			replaceUrl: true
+		}).then(() => {
+			this.ngOnInit();
+		});
+
   }
 
 

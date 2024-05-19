@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MenuItem, PrimeNGConfig } from 'primeng/api';
+import { MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { IWork, IWorkImages } from '../models/work';
 import { WorksService } from '../demo/service/works.service';
@@ -56,7 +56,8 @@ export class AppTopBarComponent {
         private _auth: Auth,
         private _storage: Storage,
         public config: PrimeNGConfig,
-        public httpClient: HttpClient
+        public httpClient: HttpClient,
+        public messageService: MessageService
     ) {
         this.config.translation.choose = "Выбрать";
         this.config.translation.cancel = "Очистить";
@@ -72,7 +73,32 @@ export class AppTopBarComponent {
     
     onUpload(event: File[]) {
 
-        if (!event) return;
+        this.newWork.address = this.newWork.address ?? "Без адреса";
+
+        if (event.length === 0) {
+
+            this.newWork.contact = this._auth.currentUser.displayName;
+            this.newWork.phone = this._auth.currentUser.phoneNumber;
+            this.newWork.id = uniqid();
+            this.newWork.images = [{
+                alt: "Нет фото",
+                itemImageSrc: "./assets/ruki/notfound.jpg",
+                title: "Фото"
+            }];
+
+            this._workService.saveWork(this.newWork);
+            this.newWork = {
+                contact: "",
+                price: null,
+                userId: this._auth.currentUser.uid,
+                location: null,
+                phone: null,
+                id: null
+            };
+            this.visible = false;
+            this.messageService.add({detail: "Подработка добавлена", severity: "succes", summary: "Подработка"});
+            return;
+        };
 
         const files: File[] = event;
         const images: IWorkImages[] = [];
@@ -109,7 +135,7 @@ export class AppTopBarComponent {
                                 id: null
                             };
                             this.visible = false;
-
+                            this.messageService.add({detail: "Подработка добавлена", severity: "succes", summary: "Подработка"});
                         }
 
                     });

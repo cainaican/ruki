@@ -39,6 +39,8 @@ export class Work {
 
 	constructor(private _domainModel: IWork){
 
+		if(!this._domainModel.location) return;
+
 		this._vectorPoint = new VectorLayer({
 			source: new VectorSource({
 				features: [
@@ -78,7 +80,7 @@ export class Work {
 	}
 
 	getVectorPoint() {
-		return this._vectorPoint;
+		return this._vectorPoint ?? null;
 	}
 
 	getDomainModel() {
