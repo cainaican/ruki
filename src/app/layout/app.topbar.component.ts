@@ -3,12 +3,13 @@ import { MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { IWork, IWorkImages } from '../models/work';
 import { WorksService } from '../demo/service/works.service';
-import { Auth } from '@angular/fire/auth';
+import { Auth, User } from '@angular/fire/auth';
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { FileUpload } from 'primeng/fileupload';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { debounceTime } from 'rxjs';
 import uniqid from 'uniqid';
+import { Router } from '@angular/router';
 
 export interface INominatimFullAdress {
     house_number: string;
@@ -41,8 +42,10 @@ export class AppTopBarComponent {
     newWork: IWork = {
         contact: "",
         price: null,
-        userId: this._auth.currentUser.uid
+        userId: this._auth?.currentUser?.uid
     };
+
+    user: User;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -55,15 +58,25 @@ export class AppTopBarComponent {
         private _workService: WorksService, 
         private _auth: Auth,
         private _storage: Storage,
+        private _router: Router,
         public config: PrimeNGConfig,
         public httpClient: HttpClient,
         public messageService: MessageService
     ) {
         this.config.translation.choose = "Выбрать";
         this.config.translation.cancel = "Очистить";
+
+        if(!this._auth.currentUser) return;
+
+        this.user = this._auth.currentUser;
      }
 
     showDialog() {
+        if(!this.user) {
+            this._router.navigateByUrl("auth/login");
+            return;
+        }
+
         this.visible = true;
     }
 

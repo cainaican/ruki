@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/"
+    "build:prod": "npx ng build --configuration production --base-href https://cainaican.github.io/ruki/",
+    "build:prod:rf": "npx ng build --configuration production --base-href https://подработка-уфа.рф"
   },
   "private": true,
   "dependencies": {

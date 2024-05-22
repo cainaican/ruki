@@ -29,12 +29,13 @@
     </div>
 </div>
 
-<div class="card flex justify-content-center">
+        <div class="card flex justify-content-center" >
     <p-dialog 
         header="Header" 
         [(visible)]="visible" 
         [modal]="true" 
         [style]="{ width: '45rem' }"
+        *ngIf="user"
         >
             <ng-template pTemplate="header">
                 <div class="inline-flex align-items-center justify-content-center gap-2">

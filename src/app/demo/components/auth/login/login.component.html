@@ -98,6 +98,10 @@
                                 </div>
                                 <button  pButton pRipple label="Войти" class="w-full mb-4 p-3 text-xl" (click)="login()"></button>
                                 <button  pButton pRipple label="Регистрация" class="w-full m-1 p-3 bg-transparent text-primary text-xl" (click)="changeForm()"></button>
+                                <!-- <button  pButton label="На главную" class="w-full m-1 p-3 bg-transparent text-primary text-xl" ></button> -->
+                                <div  class="flex m-auto w-full p-3 bg-transparent text-primary text-xl" style="justify-content: center;">
+                                    <p-button icon="pi pi-home" [rounded]="true" [routerLink]="'/'" severity="primary" />
+                                </div>
                             </div>
                             
                         </ng-template>
