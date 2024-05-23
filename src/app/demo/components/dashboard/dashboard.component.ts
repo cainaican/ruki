@@ -12,6 +12,8 @@ import { WorksService } from '../../service/works.service';
 import Select, { SelectEvent } from 'ol/interaction/Select.js';
 import {click} from 'ol/events/condition.js';
 import { Style } from 'ol/style';
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 @Component({
     templateUrl: './dashboard.component.html',
     styleUrls: ["./dashboard.component.scss"]
@@ -32,7 +34,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private _worksService: WorksService, 
     public layoutService: LayoutService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public _auth: Auth,
+    public _router: Router
   ) {}
 
   ngOnInit() {
@@ -104,6 +108,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getPhoneNumber(event, visibleWork) {
     event.stopPropagation();
+    if(!this?._auth?.currentUser) {
+      this._router.navigateByUrl("auth/login");
+      return;
+    };
     alert(`
       Имя: ${visibleWork.contact}
       Телефон: ${visibleWork.phone}
