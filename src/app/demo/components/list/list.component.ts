@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IWork } from 'src/app/models/work';
 import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -37,6 +38,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private _worksService: WorksService, 
     private _messageService: MessageService,
     private _cdr: ChangeDetectorRef,
+    private _auth: Auth,
+    private _router: Router,
   ) {}
 
   ngOnInit() {
@@ -60,6 +63,10 @@ export class ListComponent implements OnInit, OnDestroy {
 
   getPhoneNumber(event: Event, work: IWork) {
     event.stopPropagation();
+    if(!this?._auth?.currentUser) {
+      this._router.navigateByUrl("auth/login");
+      return;
+    };
     alert(`
       Имя: ${work.contact}
       Телефон: ${work.phone}
