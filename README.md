@@ -4,7 +4,7 @@
 
 - Angular v17;
 - Firebase;
-- Priming;
+- PrimeNG;
 - OpenLayers;
 
 ## Functionality
