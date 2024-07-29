@@ -1,0 +1,11 @@
+User-agent: *
+
+Disallow: /*? # поиск
+
+Disallow: /?s= # поиск
+
+Allow: /*.css # стили
+
+Allow: /*.js # скрипты
+
+Sitemap: https://подработка-уфа.рф/sitemap.xml 
