@@ -77,7 +77,12 @@ export class LoginComponent implements OnDestroy, OnInit {
 
         if(!this.validatePhoneNumber()) return;
 
-        this._aurthService.getUserByPhoneNumber(this.phoneNumber)
+        const shortPhoneNumber = this.phoneNumber
+        .replaceAll("-", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "");
+
+        this._aurthService.getUserByPhoneNumber(shortPhoneNumber)
             .then((v) => {
 
                 if (!v.empty) {
@@ -164,7 +169,9 @@ export class LoginComponent implements OnDestroy, OnInit {
 
                 if (e.message === userExistMessage) return;
 
-                let mes: Message = {detail: e.message, severity: "Неизвестная ошибка регситрации", summary: "Регистрация"};
+                let mes: Message = {detail: e.message, severity: "Неизвестная ошибка регистрации", summary: "Регистрация"};
+
+                this.appVerifierOpened = false;
 
                 this._messageService.add(mes);
             })
@@ -211,12 +218,7 @@ export class LoginComponent implements OnDestroy, OnInit {
             return false;
         }
 
-        this.phoneNumber = this.phoneNumber
-            .replaceAll("-", "")
-            .replaceAll("(", "")
-            .replaceAll(")", "");
-
-            return true;
+        return true;
     }
 
     validateName(): boolean {
