@@ -141,43 +141,23 @@ export class LoginComponent implements OnDestroy, OnInit {
         this._aurthService.getUserByPhoneNumber(newNumber)
             .then((v) => {
                 if (v.empty) {
-            
                     this.appVerifierOpened = true;
-
                     return signInWithPhoneNumber(this.auth, newNumber, this.appVerifier)
                 }
-
                 const errMessage = "Пользователь с таким номером мобильного уже существует";
-
                 this._messageService.add({severity: "error", detail: errMessage, summary: "Регистрация"});
-
                 throw new Error(errMessage);
             })
             .then(confirmationResult => {
-
                 (window as any).confirmationResult = confirmationResult;
-
                 this.appVerifierOpened = false;
-
                 this.verificationOpened = true;
-
-                return this._aurthService.saveUser({name: this.loginString, phoneNumber: newNumber, userId: this.auth.currentUser.uid});
-
-            })
-            .then((documentReference: DocumentReference) => {
-                this._messageService.add({severity: "success", detail: "Вы успешно зарегистрированы"});
-                return this.navigateToMainPage();
             })
             .catch((e) => {
-
                 let userExistMessage = "Пользователь с таким номером мобильного уже существует";
-
                 if (e.message === userExistMessage) return;
-
                 let mes: Message = {detail: e.message, severity: "Неизвестная ошибка регистрации", summary: "Регистрация"};
-
                 this.appVerifierOpened = false;
-
                 this._messageService.add(mes);
             })
         
@@ -197,11 +177,18 @@ export class LoginComponent implements OnDestroy, OnInit {
 
     async verifyCode(): Promise<void> {
         try {
+            const newNumber = this.phoneNumber
+            .replaceAll("-", "")
+            .replaceAll("(", "")
+            .replaceAll(")", "");
             await (window as any).confirmationResult.confirm(this.verificationCode);
+            // const isUserExist = await this._aurthService.getUserByPhoneNumber(newNumber);
             await updateProfile(this.auth.currentUser, {displayName: this.loginString});
-            await this.navigateToMainPage();
+            await this._aurthService.saveUser({name: this.loginString, phoneNumber: newNumber, userId: this.auth.currentUser.uid});
         } catch(e) {
             throw new Error(e);
+        } finally {
+            await this.navigateToMainPage();
         }
     }
 
