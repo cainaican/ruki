@@ -133,13 +133,18 @@ export class LoginComponent implements OnDestroy, OnInit {
 
         this.phoneNumber = this.phoneNumber.replaceAll(" ", "");
 
-        this._aurthService.getUserByPhoneNumber(this.phoneNumber)
+        const newNumber = this.phoneNumber
+        .replaceAll("-", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "");
+
+        this._aurthService.getUserByPhoneNumber(newNumber)
             .then((v) => {
                 if (v.empty) {
             
                     this.appVerifierOpened = true;
 
-                    return signInWithPhoneNumber(this.auth, this.phoneNumber, this.appVerifier)
+                    return signInWithPhoneNumber(this.auth, newNumber, this.appVerifier)
                 }
 
                 const errMessage = "Пользователь с таким номером мобильного уже существует";
@@ -156,7 +161,7 @@ export class LoginComponent implements OnDestroy, OnInit {
 
                 this.verificationOpened = true;
 
-                return this._aurthService.saveUser({name: this.loginString, phoneNumber: this.phoneNumber,userId: this.auth.currentUser.uid});
+                return this._aurthService.saveUser({name: this.loginString, phoneNumber: newNumber, userId: this.auth.currentUser.uid});
 
             })
             .then((documentReference: DocumentReference) => {
